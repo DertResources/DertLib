@@ -6,7 +6,7 @@
 #include <functional>
 #include <memory>
 //local
-#include "lib/include/NeoSpark.h"
+#include "../include/NeoSpark.h"
 //rev
 #include <rev/SparkMax.h>
 #include <rev/config/SparkMaxConfig.h>

@@ -1,4 +1,4 @@
-#include "lib/include/NeoSet.h"
+#include "../include/NeoSet.h"
 
 NeoSet::NeoSet(std::initializer_list<NeoSparkCreateInfo> createInfos)
 {

@@ -1,4 +1,4 @@
-#include "lib/include/KrakenTalon.h"
+#include "../include/KrakenTalon.h"
 
 // Create talon controller with CAN ID
 KrakenTalon::KrakenTalon(KrakenTalonCreateInfo createInfo)

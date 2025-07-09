@@ -1,4 +1,4 @@
-#include "lib/include/KrakenSet.h"
+#include "../include/KrakenSet.h"
 
 KrakenSet::KrakenSet(std::initializer_list<KrakenTalonCreateInfo> createInfos)
 {

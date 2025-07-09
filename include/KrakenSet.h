@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 //local
-#include "lib/include/KrakenTalon.h"
+#include "../include/KrakenTalon.h"
 //stre
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>

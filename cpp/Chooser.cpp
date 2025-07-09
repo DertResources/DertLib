@@ -1,4 +1,4 @@
-#include "lib/include/Chooser.h"
+#include "../include/Chooser.h"
 
 Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
 {

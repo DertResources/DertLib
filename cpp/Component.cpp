@@ -1,4 +1,4 @@
-#include "lib/include/Component.h"
+#include "../include/Component.h"
 
 std::vector<Component*> Component::AllCreatedComponents; 
 

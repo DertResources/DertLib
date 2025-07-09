@@ -1,4 +1,4 @@
-#include "lib/include/NeoSpark.h"
+#include "../include/NeoSpark.h"
 
 NeoSpark::NeoSpark(NeoSparkCreateInfo createInfo)
 : sparkMax{createInfo.canID, createInfo.motorType}
