@@ -1,7 +1,7 @@
 #include "../include/KrakenTalon.h"
 
 // Create talon controller with CAN ID
-KrakenTalon::KrakenTalon(KrakenTalonCreateInfo createInfo)
+dlib::KrakenTalon::KrakenTalon(KrakenTalonCreateInfo createInfo)
 : talonController{createInfo.canID, createInfo.canbus},
 dutyCycleControl{0}
 {
@@ -9,7 +9,7 @@ dutyCycleControl{0}
 }
 
 // Configure the talon controller settings
-void KrakenTalon::initalizeTalon(KrakenTalonCreateInfo createInfo)
+void dlib::KrakenTalon::initalizeTalon(KrakenTalonCreateInfo createInfo)
 {
     // Get Configurator to Apply configuration settings
     auto& talonConfigurator = talonController.GetConfigurator();
@@ -42,34 +42,34 @@ void KrakenTalon::initalizeTalon(KrakenTalonCreateInfo createInfo)
 }
 
 // Get Motor Encoder Position
-void KrakenTalon::getPositionCallback()
+void dlib::KrakenTalon::getPositionCallback()
 {  
     *finalCreateInfo.getPositionCallback = talonController.GetPosition().GetValueAsDouble();
 }
 
 // Get Motor Encoder Velocity
-void KrakenTalon::getVelocityCallback()
+void dlib::KrakenTalon::getVelocityCallback()
 {  
     *finalCreateInfo.getVelocityCallback = talonController.GetVelocity().GetValueAsDouble()*60;  // Multiply by 60 for Rev/Sec to Rev/Min
 }
 
 // Set Motor Duty Cycle
-void KrakenTalon::setDutyCycleCallback()
+void dlib::KrakenTalon::setDutyCycleCallback()
 {
     talonController.SetControl(dutyCycleControl.WithOutput(*finalCreateInfo.setDutyCycleCallback));
 }
 
-void KrakenTalon::setDutyCycle(double DC)
+void dlib::KrakenTalon::setDutyCycle(double DC)
 {
     talonController.SetControl(dutyCycleControl.WithOutput(DC));
 }
 
-void KrakenTalon::setBrakeMode(bool isBrakeMode)
+void dlib::KrakenTalon::setBrakeMode(bool isBrakeMode)
 {
     dutyCycleControl.WithOverrideBrakeDurNeutral(isBrakeMode);
 }
 
-void KrakenTalon::stopMotor()
+void dlib::KrakenTalon::stopMotor()
 {
     talonController.StopMotor();
 }

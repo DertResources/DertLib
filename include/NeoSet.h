@@ -12,18 +12,20 @@
 #include <rev/config/SparkMaxConfig.h>
 #include <rev/SparkRelativeEncoder.h>
 
-class NeoSet
-{
-public:
-    NeoSet(std::initializer_list<NeoSparkCreateInfo> createInfos);
-    void stop();
-    void set(double dutyCycle);
-    void setBrakeModeWhenIdle(bool isBrakeMode);
-    void pushData();
-    void pullCommands();
-private:
-    void addCallbacks(NeoSpark& motor);
-    std::vector<std::unique_ptr<NeoSpark>> motorSet;
-    std::vector<std::function<void()>> pushDataCalbacks;
-    std::vector<std::function<void()>> pullCommandCalbacks;
+namespace dlib {
+    class NeoSet
+    {
+    public:
+        NeoSet(std::initializer_list<NeoSparkCreateInfo> createInfos);
+        void stop();
+        void set(double dutyCycle);
+        void setBrakeModeWhenIdle(bool isBrakeMode);
+        void pushData();
+        void pullCommands();
+    private:
+        void addCallbacks(NeoSpark& motor);
+        std::vector<std::unique_ptr<NeoSpark>> motorSet;
+        std::vector<std::function<void()>> pushDataCalbacks;
+        std::vector<std::function<void()>> pullCommandCalbacks;
+    };
 };

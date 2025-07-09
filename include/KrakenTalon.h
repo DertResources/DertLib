@@ -12,54 +12,56 @@
 #include <ctre/phoenix6/configs/Configs.hpp>
 #include <ctre/phoenix6/StatusSignal.hpp>
 
-struct KrakenTalonCreateInfo
-{
-    //motor
-    int canID;
-    const char* canbus;
-    bool isReversed = false;
-    double supplyCurrentLimit = 15;
-    double openLoopRampPeriod = 0;
-    bool enableFOC = true;
-
-    //sensor
-    double* setDutyCycleCallback = nullptr;
-    double* getVelocityCallback = nullptr;
-    double* getPositionCallback = nullptr;
-
-    static constexpr KrakenTalonCreateInfo modifyInfo(
-        KrakenTalonCreateInfo oldCreateInfo,
-        int canID,           // CAN ID for the device
-        double* setDutyCycleCallback = nullptr,
-        double* getVelocityCallback = nullptr,
-        double* getPositionCallback = nullptr)
+namespace dlib {
+    struct KrakenTalonCreateInfo
     {
-        auto newCreateInfo = oldCreateInfo;
-        newCreateInfo.canID = canID;
-        newCreateInfo.setDutyCycleCallback = setDutyCycleCallback;
-        newCreateInfo.getVelocityCallback = getVelocityCallback;
-        newCreateInfo.getPositionCallback = getPositionCallback;
-        return newCreateInfo;
-    }
-};
+        //motor
+        int canID;
+        const char* canbus;
+        bool isReversed = false;
+        double supplyCurrentLimit = 15;
+        double openLoopRampPeriod = 0;
+        bool enableFOC = true;
 
-class KrakenTalon
-{
-public:
-    KrakenTalon(KrakenTalonCreateInfo createInfo);
-    KrakenTalon(KrakenTalonCreateInfo createInfo, int canID);
-    KrakenTalon(KrakenTalon&& other) noexcept;
+        //sensor
+        double* setDutyCycleCallback = nullptr;
+        double* getVelocityCallback = nullptr;
+        double* getPositionCallback = nullptr;
 
-    void getPositionCallback();
-    void getVelocityCallback();
-    void setDutyCycleCallback();
-    void setDutyCycle(double DC);
-    void setBrakeMode(bool isBrakeMode);
-    void stopMotor();
+        static constexpr KrakenTalonCreateInfo modifyInfo(
+            KrakenTalonCreateInfo oldCreateInfo,
+            int canID,           // CAN ID for the device
+            double* setDutyCycleCallback = nullptr,
+            double* getVelocityCallback = nullptr,
+            double* getPositionCallback = nullptr)
+        {
+            auto newCreateInfo = oldCreateInfo;
+            newCreateInfo.canID = canID;
+            newCreateInfo.setDutyCycleCallback = setDutyCycleCallback;
+            newCreateInfo.getVelocityCallback = getVelocityCallback;
+            newCreateInfo.getPositionCallback = getPositionCallback;
+            return newCreateInfo;
+        }
+    };
 
-    ctre::phoenix6::hardware::TalonFX talonController;
-    ctre::phoenix6::controls::DutyCycleOut dutyCycleControl;
-    KrakenTalonCreateInfo finalCreateInfo{};
-private:
-    void initalizeTalon(KrakenTalonCreateInfo createInfo);
+    class KrakenTalon
+    {
+    public:
+        KrakenTalon(KrakenTalonCreateInfo createInfo);
+        KrakenTalon(KrakenTalonCreateInfo createInfo, int canID);
+        KrakenTalon(KrakenTalon&& other) noexcept;
+
+        void getPositionCallback();
+        void getVelocityCallback();
+        void setDutyCycleCallback();
+        void setDutyCycle(double DC);
+        void setBrakeMode(bool isBrakeMode);
+        void stopMotor();
+
+        ctre::phoenix6::hardware::TalonFX talonController;
+        ctre::phoenix6::controls::DutyCycleOut dutyCycleControl;
+        KrakenTalonCreateInfo finalCreateInfo{};
+    private:
+        void initalizeTalon(KrakenTalonCreateInfo createInfo);
+    };
 };

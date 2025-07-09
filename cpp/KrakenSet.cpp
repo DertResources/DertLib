@@ -1,6 +1,6 @@
 #include "../include/KrakenSet.h"
 
-KrakenSet::KrakenSet(std::initializer_list<KrakenTalonCreateInfo> createInfos)
+dlib::KrakenSet::KrakenSet(std::initializer_list<KrakenTalonCreateInfo> createInfos)
 {
     for(auto createInfo : createInfos)
     {
@@ -9,7 +9,7 @@ KrakenSet::KrakenSet(std::initializer_list<KrakenTalonCreateInfo> createInfos)
     }
 }
 
-void KrakenSet::stop()
+void dlib::KrakenSet::stop()
 {
     for(auto& motor : motorSet)
     {
@@ -17,7 +17,7 @@ void KrakenSet::stop()
     }
 }
 
-void KrakenSet::set(double dutyCycle)
+void dlib::KrakenSet::set(double dutyCycle)
 {
     for(auto& motor : motorSet)
     {
@@ -25,7 +25,7 @@ void KrakenSet::set(double dutyCycle)
     }
 }
 
-void KrakenSet::setBrakeModeWhenIdle(bool isBrakeMode)
+void dlib::KrakenSet::setBrakeModeWhenIdle(bool isBrakeMode)
 {
     for(auto& motor : motorSet)
     {
@@ -33,7 +33,7 @@ void KrakenSet::setBrakeModeWhenIdle(bool isBrakeMode)
     }
 }
 
-void KrakenSet::addCallbacks(KrakenTalon& motor)
+void dlib::KrakenSet::addCallbacks(KrakenTalon& motor)
 {
     if(motor.finalCreateInfo.setDutyCycleCallback != nullptr)
         pullCommandCalbacks.push_back(std::bind(&KrakenTalon::setDutyCycleCallback, &motor));
@@ -43,13 +43,13 @@ void KrakenSet::addCallbacks(KrakenTalon& motor)
         pushDataCalbacks.push_back(std::bind(&KrakenTalon::getVelocityCallback, &motor));
 }
 
-void KrakenSet::pushData()
+void dlib::KrakenSet::pushData()
 {
     for(auto func : pushDataCalbacks)
         func();
 }
 
-void KrakenSet::pullCommands()
+void dlib::KrakenSet::pullCommands()
 {
     for(auto func : pullCommandCalbacks)
         func();

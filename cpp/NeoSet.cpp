@@ -1,6 +1,6 @@
 #include "../include/NeoSet.h"
 
-NeoSet::NeoSet(std::initializer_list<NeoSparkCreateInfo> createInfos)
+dlib::NeoSet::NeoSet(std::initializer_list<NeoSparkCreateInfo> createInfos)
 {
     for(auto createInfo : createInfos)
     {
@@ -9,25 +9,25 @@ NeoSet::NeoSet(std::initializer_list<NeoSparkCreateInfo> createInfos)
     }
 }
 
-void NeoSet::stop()
+void dlib::NeoSet::stop()
 {
     for(auto& motor : motorSet)
         motor->stopMotor();
 }
 
-void NeoSet::set(double dutyCycle)
+void dlib::NeoSet::set(double dutyCycle)
 {
     for(auto& motor : motorSet)
         motor->setDutyCycle(dutyCycle);
 }
 
-void NeoSet::setBrakeModeWhenIdle(bool isBrakeMode)
+void dlib::NeoSet::setBrakeModeWhenIdle(bool isBrakeMode)
 {
     for(auto& motor : motorSet)
         motor->setBrakeModeWhenIdle(isBrakeMode);
 }
 
-void NeoSet::addCallbacks(NeoSpark& motor)
+void dlib::NeoSet::addCallbacks(NeoSpark& motor)
 {
     if(motor.finalCreateInfo.setDutyCycleCallback != nullptr)
         pullCommandCalbacks.push_back(std::bind(&NeoSpark::setDutyCycleCallback, &motor));
@@ -37,13 +37,13 @@ void NeoSet::addCallbacks(NeoSpark& motor)
         pushDataCalbacks.push_back(std::bind(&NeoSpark::getVelocityCallback, &motor));
 }
 
-void NeoSet::pushData()
+void dlib::NeoSet::pushData()
 {
     for(auto func : pushDataCalbacks)
         func();
 }
 
-void NeoSet::pullCommands()
+void dlib::NeoSet::pullCommands()
 {
     for(auto func : pullCommandCalbacks)
         func();

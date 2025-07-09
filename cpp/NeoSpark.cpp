@@ -1,12 +1,12 @@
 #include "../include/NeoSpark.h"
 
-NeoSpark::NeoSpark(NeoSparkCreateInfo createInfo)
+dlib::NeoSpark::NeoSpark(NeoSparkCreateInfo createInfo)
 : sparkMax{createInfo.canID, createInfo.motorType}
 {
     initalizeSpark(createInfo);
 }
 
-void NeoSpark::initalizeSpark(NeoSparkCreateInfo createInfo)
+void dlib::NeoSpark::initalizeSpark(NeoSparkCreateInfo createInfo)
 {
     rev::spark::SparkMaxConfig config{};
     config
@@ -22,22 +22,22 @@ void NeoSpark::initalizeSpark(NeoSparkCreateInfo createInfo)
     finalCreateInfo = createInfo;
 }
 
-void NeoSpark::getPositionCallback()
+void dlib::NeoSpark::getPositionCallback()
 {
     *finalCreateInfo.getPositionCallback = sparkRelEncoder->GetPosition();
 }
 
-void NeoSpark::getVelocityCallback()
+void dlib::NeoSpark::getVelocityCallback()
 {
     *finalCreateInfo.getVelocityCallback = sparkRelEncoder->GetVelocity();
 }
 
-void NeoSpark::setDutyCycleCallback()
+void dlib::NeoSpark::setDutyCycleCallback()
 {
     sparkMax.Set(*finalCreateInfo.setDutyCycleCallback);
 }
 
-void NeoSpark::setBrakeModeWhenIdle(bool isBrakeMode)
+void dlib::NeoSpark::setBrakeModeWhenIdle(bool isBrakeMode)
 {
     rev::spark::SparkMaxConfig config{};
     config.SetIdleMode((isBrakeMode) ?  rev::spark::SparkBaseConfig::IdleMode::kBrake :  rev::spark::SparkBaseConfig::IdleMode::kCoast );
@@ -46,12 +46,12 @@ void NeoSpark::setBrakeModeWhenIdle(bool isBrakeMode)
                        rev::spark::SparkBase::PersistMode::kNoPersistParameters);
 }
 
-void NeoSpark::setDutyCycle(double DC)
+void dlib::NeoSpark::setDutyCycle(double DC)
 {
     sparkMax.Set(DC);
 }
 
-void NeoSpark::stopMotor()
+void dlib::NeoSpark::stopMotor()
 {
     sparkMax.StopMotor();
 }

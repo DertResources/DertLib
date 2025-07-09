@@ -1,8 +1,8 @@
 #include "../include/Component.h"
 
-std::vector<Component*> Component::AllCreatedComponents; 
+std::vector<dlib::Component*> dlib::Component::AllCreatedComponents; 
 
-Component::Component()
+dlib::Component::Component()
 {
     AllCreatedComponents.push_back(this);
 }   

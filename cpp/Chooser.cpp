@@ -1,11 +1,11 @@
 #include "../include/Chooser.h"
 
-Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
+dlib::Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
 {
     InitChooser(ChooserName, chooserMap);
 }
 
-Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap, double* simulinkPointer)
+dlib::Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap, double* simulinkPointer)
 {
     InitChooser(ChooserName, chooserMap);
     chooserSelectedKeyPointer = simulinkPointer;
@@ -17,7 +17,7 @@ Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int
     );
 }
 
-void Chooser::InitChooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
+void dlib::Chooser::InitChooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
 {
     this->chooserMap = chooserMap;
 
@@ -37,7 +37,7 @@ void Chooser::InitChooser(std::string ChooserName, std::vector<std::pair<std::st
 /**
  * warning: the defulat value if the current selected is not found is -1
  */
-double Chooser::GetSelectedKey(std::string currentSelection)
+double dlib::Chooser::GetSelectedKey(std::string currentSelection)
 {
     for(size_t pos = 0; pos < chooserMap.size(); pos++)
     {
@@ -51,7 +51,7 @@ double Chooser::GetSelectedKey(std::string currentSelection)
     return -1;
 }
 
-double Chooser::GetSelectedKey()
+double dlib::Chooser::GetSelectedKey()
 {
     std::string currentSelection = m_chooser.GetSelected();
     return GetSelectedKey(currentSelection);
