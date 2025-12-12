@@ -18,12 +18,17 @@ namespace dlib {
         void stop();
         void set(double dutyCycle);
         void setBrakeModeWhenIdle(bool isBrakeMode);
+        void pullVelocities();
+        void pullPositions();
         void pushData();
         void pullCommands();
+        void pushVelocities();
+        void pushPositions();
     private:
         void addCallbacks(KrakenTalon& motor);
         std::vector<std::unique_ptr<KrakenTalon>> motorSet;
-        std::vector<std::function<void()>> pushDataCalbacks;
-        std::vector<std::function<void()>> pullCommandCalbacks;
+        std::vector<std::function<void()>> VelocityCallbacks;
+        std::vector<std::function<void()>> PositionCallbacks;
+        std::vector<std::function<void()>> DutyCycleCallbacks;
     };
 };

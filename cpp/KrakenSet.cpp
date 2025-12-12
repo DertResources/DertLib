@@ -36,21 +36,33 @@ void dlib::KrakenSet::setBrakeModeWhenIdle(bool isBrakeMode)
 void dlib::KrakenSet::addCallbacks(KrakenTalon& motor)
 {
     if(motor.finalCreateInfo.setDutyCycleCallback != nullptr)
-        pullCommandCalbacks.push_back(std::bind(&KrakenTalon::setDutyCycleCallback, &motor));
+        DutyCycleCallbacks.push_back(std::bind(&KrakenTalon::setDutyCycleCallback, &motor));
     if(motor.finalCreateInfo.getPositionCallback != nullptr)
-        pushDataCalbacks.push_back(std::bind(&KrakenTalon::getPositionCallback, &motor));
+        pushDataPositionCallbacks.push_back(std::bind(&KrakenTalon::getPositionCallback, &motor));
     if(motor.finalCreateInfo.getVelocityCallback != nullptr)
-        pushDataCalbacks.push_back(std::bind(&KrakenTalon::getVelocityCallback, &motor));
+        pushDataVelocityCallbacks.push_back(std::bind(&KrakenTalon::getVelocityCallback, &motor));
 }
 
 void dlib::KrakenSet::pushData()
 {
-    for(auto func : pushDataCalbacks)
-        func();
+    pushVelocities();
+    pushPositions();
 }
 
 void dlib::KrakenSet::pullCommands()
 {
-    for(auto func : pullCommandCalbacks)
+    for(auto func : DutyCycleCallbacks)
+        func();
+}
+
+void dlib::KrakenSet::pushVelocities()
+{
+    for(auto func : VelocityCallbacks)
+        func();
+}
+
+void dlib::KrakenSet::pushPositions()
+{
+    for(auto func : PositionCallbacks)
         func();
 }
