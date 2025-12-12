@@ -11,7 +11,7 @@ namespace dlib {
     public:
         static std::vector<HighFrequencyComponent*> AllCreatedHighFrequencyComponents;
 
-        virtual void HighFrequencyPreStep() = 0;
-        virtual void HighFrequencyPostStep() = 0;
+        virtual void HighFrequencyPreStepCallback() = 0;
+        virtual void HighFrequencyPostStepCallback() = 0;
     };
 };
