@@ -38,9 +38,9 @@ void dlib::KrakenSet::addCallbacks(KrakenTalon& motor)
     if(motor.finalCreateInfo.setDutyCycleCallback != nullptr)
         DutyCycleCallbacks.push_back(std::bind(&KrakenTalon::setDutyCycleCallback, &motor));
     if(motor.finalCreateInfo.getPositionCallback != nullptr)
-        pushDataPositionCallbacks.push_back(std::bind(&KrakenTalon::getPositionCallback, &motor));
+        PositionCallbacks.push_back(std::bind(&KrakenTalon::getPositionCallback, &motor));
     if(motor.finalCreateInfo.getVelocityCallback != nullptr)
-        pushDataVelocityCallbacks.push_back(std::bind(&KrakenTalon::getVelocityCallback, &motor));
+        VelocityCallbacks.push_back(std::bind(&KrakenTalon::getVelocityCallback, &motor));
 }
 
 void dlib::KrakenSet::pushData()
