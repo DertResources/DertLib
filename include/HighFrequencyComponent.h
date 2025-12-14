@@ -9,6 +9,8 @@ namespace dlib {
     class HighFrequencyComponent : public dlib::Component
     {
     public:
+        HighFrequencyComponent();
+
         static std::vector<HighFrequencyComponent*> AllCreatedHighFrequencyComponents;
 
         virtual void HighFrequencyPreStepCallback() = 0;
