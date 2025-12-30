@@ -1,11 +1,22 @@
 #include "../include/Chooser.h"
 
-dlib::Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
+/**
+ * Manual chooser constructor, the user must grab results each loop
+ * @param chooserName Title of the chooser
+ * @param chooserMap Map of options in the chooser to the ints that are sent to simulink
+ */
+dlib::Chooser::Chooser(std::string chooserName, std::vector<std::pair<std::string, int>> chooserMap)
 {
     InitChooser(ChooserName, chooserMap);
 }
 
-dlib::Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap, double* simulinkPointer)
+/**
+ * Simulink based constructor, this will automatically send user selections to simulink
+ * @param chooserName Title of the chooser
+ * @param chooserMap Map of options in the chooser to the ints that are sent to simulink
+ * @param simulinkPointer pointer to the simulink U port.
+ */
+dlib::Chooser::Chooser(std::string chooserName, std::vector<std::pair<std::string, int>> chooserMap, double* simulinkPointer)
 {
     InitChooser(ChooserName, chooserMap);
     chooserSelectedKeyPointer = simulinkPointer;
@@ -17,7 +28,12 @@ dlib::Chooser::Chooser(std::string ChooserName, std::vector<std::pair<std::strin
     );
 }
 
-void dlib::Chooser::InitChooser(std::string ChooserName, std::vector<std::pair<std::string, int>> chooserMap)
+/**
+ * Setup chooser graphic in elastic
+ * @param chooserName Title of chooser in Elastic
+ * @param chooserMap  Map of options in the chooser, and the output int for each
+ */
+void dlib::Chooser::InitChooser(std::string chooserName, std::vector<std::pair<std::string, int>> chooserMap)
 {
     this->chooserMap = chooserMap;
 
@@ -27,15 +43,16 @@ void dlib::Chooser::InitChooser(std::string ChooserName, std::vector<std::pair<s
     m_chooser.SetDefaultOption(chooserMap.at(0).first, chooserMap.at(0).first);
 
     for(size_t pos = 1; pos < chooserMap.size(); pos++)
-    {
         m_chooser.AddOption(chooserMap.at(pos).first, chooserMap.at(pos).first);
-    }
 
     frc::SmartDashboard::PutData(ChooserName, &m_chooser);
 }
 
 /**
- * warning: the defulat value if the current selected is not found is -1
+ * Gets the int that matches the input key
+ * @param currentSelection name of option in chooser, or the 'key'
+ * @return the mapped integer for the string key 'currentSelection'
+ * @warning the default value if the current selected is not found is -1
  */
 double dlib::Chooser::GetSelectedKey(std::string currentSelection)
 {
@@ -44,13 +61,14 @@ double dlib::Chooser::GetSelectedKey(std::string currentSelection)
         std::pair<std::string, int> pairAtPos = chooserMap.at(pos);
 
         if(pairAtPos.first == currentSelection)
-        {
             return pairAtPos.second;
-        }
     }
     return -1;
 }
 
+/**
+ * Gets the current user selected option and returns the int that maps to that
+ */
 double dlib::Chooser::GetSelectedKey()
 {
     std::string currentSelection = m_chooser.GetSelected();
