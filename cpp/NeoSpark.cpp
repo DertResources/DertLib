@@ -43,7 +43,7 @@ void dlib::NeoSpark::setDutyCycleCallback()
 }
 
 /** set brake mode of motor */
-void dlib::NeoSpark::setBrakeModeWhenIdle(bool isBrakeMode)
+void dlib::NeoSpark::setBrakeMode(bool isBrakeMode)
 {
     rev::spark::SparkMaxConfig config{};
     config.SetIdleMode((isBrakeMode) ?  rev::spark::SparkBaseConfig::IdleMode::kBrake :  rev::spark::SparkBaseConfig::IdleMode::kCoast );
