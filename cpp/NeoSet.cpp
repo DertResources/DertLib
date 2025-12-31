@@ -53,28 +53,28 @@ void dlib::NeoSet::addCallbacks(NeoSpark& motor)
 
 
 /** Pull positions and velocities from motor controllers and push them into simulink */
-void pushData()
+void dlib::NeoSet::pushData()
 {
     pushVelocities();
     pushPositions();
 }
 
 /** Pull commanded duty cycles from simulink outputs and push them to motor controllers */
-void pullCommands()
+void dlib::NeoSet::pullCommands()
 {
     for(auto func : DutyCycleCallbacks)
         func();
 }
 
 /** Pull motor angular velocities from motor controllers and push them into simulink */
-void pushVelocities()
+void dlib::NeoSet::pushVelocities()
 {
     for(auto func : VelocityCallbacks)
         func();
 }
 
 /** Pull motor angular positions from motor controllers and push them into simulink */
-void pushPositions()
+void dlib::NeoSet::pushPositions()
 {
     for(auto func : PositionCallbacks)
         func();
