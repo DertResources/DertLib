@@ -7,7 +7,7 @@
  */
 dlib::Chooser::Chooser(std::string chooserName, std::vector<std::pair<std::string, int>> chooserMap)
 {
-    InitChooser(ChooserName, chooserMap);
+    InitChooser(chooserName, chooserMap);
 }
 
 /**
@@ -18,7 +18,7 @@ dlib::Chooser::Chooser(std::string chooserName, std::vector<std::pair<std::strin
  */
 dlib::Chooser::Chooser(std::string chooserName, std::vector<std::pair<std::string, int>> chooserMap, double* simulinkPointer)
 {
-    InitChooser(ChooserName, chooserMap);
+    InitChooser(chooserName, chooserMap);
     chooserSelectedKeyPointer = simulinkPointer;
 
     m_chooser.OnChange(
@@ -45,7 +45,7 @@ void dlib::Chooser::InitChooser(std::string chooserName, std::vector<std::pair<s
     for(size_t pos = 1; pos < chooserMap.size(); pos++)
         m_chooser.AddOption(chooserMap.at(pos).first, chooserMap.at(pos).first);
 
-    frc::SmartDashboard::PutData(ChooserName, &m_chooser);
+    frc::SmartDashboard::PutData(chooserName, &m_chooser);
 }
 
 /**

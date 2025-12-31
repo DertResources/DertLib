@@ -34,7 +34,7 @@ void dlib::NeoSet::set(double dutyCycle)
 void dlib::NeoSet::setBrakeModeWhenIdle(bool isBrakeMode)
 {
     for(auto& motor : motorSet)
-        motor->setBrakeModeWhenIdle(isBrakeMode);
+        motor->setBrakeMode(isBrakeMode);
 }
 
 /** Add all callbacks to the callback vectors
@@ -43,12 +43,14 @@ void dlib::NeoSet::setBrakeModeWhenIdle(bool isBrakeMode)
 void dlib::NeoSet::addCallbacks(NeoSpark& motor)
 {
     if(motor.finalCreateInfo.setDutyCycleCallback != nullptr)
-        pullCommandCalbacks.push_back(std::bind(&NeoSpark::setDutyCycleCallback, &motor));
+        DutyCycleCallbacks.push_back(std::bind(&NeoSpark::setDutyCycleCallback, &motor));
     if(motor.finalCreateInfo.getPositionCallback != nullptr)
-        pushDataCalbacks.push_back(std::bind(&NeoSpark::getPositionCallback, &motor));
+        PositionCallbacks.push_back(std::bind(&NeoSpark::getPositionCallback, &motor));
     if(motor.finalCreateInfo.getVelocityCallback != nullptr)
-        pushDataCalbacks.push_back(std::bind(&NeoSpark::getVelocityCallback, &motor));
+        VelocityCallbacks.push_back(std::bind(&NeoSpark::getVelocityCallback, &motor));
 }
+
+
 
 /** Pull positions and velocities from motor controllers and push them into simulink */
 void pushData()
