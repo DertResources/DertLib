@@ -13,7 +13,7 @@ dlib::NeoMotor::NeoMotor(NeoMotorCreateInfo createInfo)
     sparkMax.Configure(config,
                        rev::spark::SparkBase::ResetMode::kResetSafeParameters,
                        rev::spark::SparkBase::PersistMode::kNoPersistParameters);
-    if(createInfo.VelocityCallback != nullptr || createInfo.PositionCallback != nullptr)
+    if(createInfo.velocityCallback != nullptr || createInfo.positionCallback != nullptr)
         sparkRelEncoder = sparkMax.GetEncoder();
     finalCreateInfo = createInfo;
 }
