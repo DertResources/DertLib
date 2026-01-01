@@ -1,7 +1,7 @@
 #include "../include/KrakenX60Group.h"
 
 /** Constructor for the kraken Set 
- * @param createInfos array of kraken create infos
+ * @param createInfos Array of kraken create infos
  */
 dlib::KrakenX60Group::KrakenX60Group(std::initializer_list<KrakenX60MotorCreateInfo> createInfos)
 {
@@ -22,7 +22,7 @@ void dlib::KrakenX60Group::Stop()
 }
 
 /** Set the duty cycle of all motors
- * @param dutyCycle duty cycle for all motors
+ * @param dutyCycle Duty cycle for all motors
  */
 void dlib::KrakenX60Group::Set(double dutyCycle)
 {
@@ -33,28 +33,28 @@ void dlib::KrakenX60Group::Set(double dutyCycle)
 }
 
 /** Set the brake mode when idle (coast / break) for all motors 
- * @param isBrakeMode the mode the motors will be in when command is zero.
+ * @param isBrakeMode The mode the motors will be in when command is zero.
  * true for break, false for coast
  */
 void dlib::KrakenX60Group::SetBrakeModeWhenIdle(bool isBrakeMode)
 {
     for(auto& motor : motorSet)
     {
-        motor->setBrakeMode(isBrakeMode);
+        motor->SetBrakeMode(isBrakeMode);
     }
 }
 
 /** Add all callbacks to the callback vectors
- * @param motor reference to KrackenTalon object
+ * @param motor Reference to KrackenTalon object
  */
 void dlib::KrakenX60Group::AddCallbacks(KrakenX60Motor& motor)
 {
-    if(motor.finalCreateInfo.DutyCycleCallback != nullptr)
-        dutyCycleCallbacks.push_back(std::bind(&KrakenX60Motor::DutyCycleCallback, &motor));
-    if(motor.finalCreateInfo.PositionCallback != nullptr)
-        positionCallbacks.push_back(std::bind(&KrakenX60Motor::PositionCallback, &motor));
-    if(motor.finalCreateInfo.VelocityCallback != nullptr)
-        velocityCallbacks.push_back(std::bind(&KrakenX60Motor::VelocityCallback, &motor));
+    if(motor.finalCreateInfo.dutyCycleCallback != nullptr)
+        dutyCycleCallbacks.push_back(std::bind(&KrakenX60Motor::FetchDutyCycleFromSLCallback, &motor));
+    if(motor.finalCreateInfo.positionCallback != nullptr)
+        positionCallbacks.push_back(std::bind(&KrakenX60Motor::SendPositionToSLCallback, &motor));
+    if(motor.finalCreateInfo.velocityCallback != nullptr)
+        velocityCallbacks.push_back(std::bind(&KrakenX60Motor::SendVelocityToSLCallback, &motor));
 }
 
 /** Pull positions and velocities from motor controllers and push them into simulink */

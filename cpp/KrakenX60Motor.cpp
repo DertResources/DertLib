@@ -38,19 +38,19 @@ dutyCycleControl{0}
 /** Callback for getting position of motor */
 void dlib::KrakenX60Motor::SendPositionToSLCallback()
 {  
-    *finalCreateInfo.PositionCallback = talonController.GetPosition().GetValueAsDouble();
+    *finalCreateInfo.positionCallback = talonController.GetPosition().GetValueAsDouble();
 }
 
 /** Callback for getting velocity of motor */
 void dlib::KrakenX60Motor::SendVelocityToSLCallback()
 {  
-    *finalCreateInfo.VelocityCallback = talonController.GetVelocity().GetValueAsDouble()*60;  // Multiply by 60 for Rev/Sec to Rev/Min
+    *finalCreateInfo.velocityCallback = talonController.GetVelocity().GetValueAsDouble()*60;  // Multiply by 60 for Rev/Sec to Rev/Min
 }
 
 /** Callback for setting duty cycle of motor */
 void dlib::KrakenX60Motor::FetchDutyCycleFromSLCallback()
 {
-    talonController.SetControl(dutyCycleControl.WithOutput(*finalCreateInfo.DutyCycleCallback));
+    talonController.SetControl(dutyCycleControl.WithOutput(*finalCreateInfo.dutyCycleCallback));
 }
 
 /** Set duty cycle of motor */

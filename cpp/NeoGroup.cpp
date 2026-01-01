@@ -42,11 +42,11 @@ void dlib::NeoGroup::SetBrakeModeWhenIdle(bool isBrakeMode)
  */
 void dlib::NeoGroup::AddCallbacks(NeoMotor& motor)
 {
-    if(motor.finalCreateInfo.DutyCycleCallback != nullptr)
+    if(motor.finalCreateInfo.dutyCycleCallback != nullptr)
         dutyCycleCallbacks.push_back(std::bind(&NeoMotor::FetchDutyCycleFromSLCallback, &motor));
-    if(motor.finalCreateInfo.PositionCallback != nullptr)
+    if(motor.finalCreateInfo.positionCallback != nullptr)
         positionCallbacks.push_back(std::bind(&NeoMotor::SendPositionToSLCallback, &motor));
-    if(motor.finalCreateInfo.VelocityCallback != nullptr)
+    if(motor.finalCreateInfo.velocityCallback != nullptr)
         velocityCallbacks.push_back(std::bind(&NeoMotor::SendVelocityToSLCallback, &motor));
 }
 

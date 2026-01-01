@@ -21,19 +21,19 @@ dlib::NeoMotor::NeoMotor(NeoMotorCreateInfo createInfo)
 /** Callback for getting position of motor */
 void dlib::NeoMotor::SendPositionToSLCallback()
 {
-    *finalCreateInfo.PositionCallback = sparkRelEncoder->GetPosition();
+    *finalCreateInfo.positionCallback = sparkRelEncoder->GetPosition();
 }
 
 /** Callback for getting velocity of motor */
 void dlib::NeoMotor::SendVelocityToSLCallback()
 {
-    *finalCreateInfo.VelocityCallback = sparkRelEncoder->GetVelocity();
+    *finalCreateInfo.velocityCallback = sparkRelEncoder->GetVelocity();
 }
 
 /** Callback for setting duty cycle of motor */
 void dlib::NeoMotor::FetchDutyCycleFromSLCallback()
 {
-    sparkMax.Set(*finalCreateInfo.DutyCycleCallback);
+    sparkMax.Set(*finalCreateInfo.dutyCycleCallback);
 }
 
 /** Set brake mode of motor */

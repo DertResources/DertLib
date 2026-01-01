@@ -47,7 +47,7 @@ namespace dlib {
         {
             auto newCreateInfo = oldCreateInfo;
             newCreateInfo.canID = canID;
-            newCreateInfo.DutyCycleCallback = dutyCycleCallback;
+            newCreateInfo.dutyCycleCallback = dutyCycleCallback;
             newCreateInfo.velocityCallback = velocityCallback;
             newCreateInfo.positionCallback = positionCallback;
             return newCreateInfo;
@@ -86,6 +86,9 @@ namespace dlib {
         /** Stop motor */
         void StopMotor();
 
+        /** Create info for this motor */
+        NeoMotorCreateInfo finalCreateInfo{};
+
     private:
         /** Motor controller object
          * @warning This object has its copy and move constructors disabled
@@ -97,9 +100,6 @@ namespace dlib {
          * @warning This object is only filled when either velocityCallback or positionCallback
          * are not nullptr 
          */
-        std::optional<rev::spark::SparkRelativeEncoder> sparkRelEncoder;
-
-        /** Create info for this motor */
-        NeoMotorCreateInfo finalCreateInfo{};        
+        std::optional<rev::spark::SparkRelativeEncoder> sparkRelEncoder;        
     };
 };

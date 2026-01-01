@@ -52,9 +52,9 @@ namespace dlib {
         {
             auto newCreateInfo = oldCreateInfo;
             newCreateInfo.canID = canID;
-            newCreateInfo.DutyCycleCallback = dutyCycleCallback;
-            newCreateInfo.VelocityCallback = velocityCallback;
-            newCreateInfo.PositionCallback = positionCallback;
+            newCreateInfo.dutyCycleCallback = dutyCycleCallback;
+            newCreateInfo.velocityCallback = velocityCallback;
+            newCreateInfo.positionCallback = positionCallback;
             return newCreateInfo;
         }
     }; 
@@ -91,6 +91,9 @@ namespace dlib {
         /** Stop motor */
         void StopMotor();
 
+        /** Create info for this motor */
+        KrakenX60MotorCreateInfo finalCreateInfo{};
+
     private:
         /** Motor controller object
          * @warning This object has its copy and move constructors disabled
@@ -99,8 +102,5 @@ namespace dlib {
 
         /** Motor control object */
         ctre::phoenix6::controls::DutyCycleOut dutyCycleControl;
-
-        /** Create info for this motor */
-        KrakenX60MotorCreateInfo finalCreateInfo{};
     };
 };
