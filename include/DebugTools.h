@@ -29,6 +29,5 @@ namespace dlib {
 
             frc::SmartDashboard::PutStringArray(keyName, std::span<const std::string>(newVec.data(), newVec.size()));
         }
-    private:
     };
 };

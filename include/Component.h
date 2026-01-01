@@ -11,6 +11,7 @@ namespace dlib {
     class Component
     {
     public:
+        /** A super constructor that holds together all child "Component Classes" */
         Component();
 
         /** 
@@ -18,7 +19,7 @@ namespace dlib {
          * This vector is called from robot.h to itterate
          * through all callbacks. 
          */
-        static std::vector<Component*> AllCreatedComponents; 
+        static std::vector<Component*> allCreatedComponents; 
         
         /**
          * Component specific callback that runs before the simulink step function

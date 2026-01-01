@@ -1,6 +1,6 @@
 #include "../include/Component.h"
 
-std::vector<dlib::Component*> dlib::Component::AllCreatedComponents; 
+std::vector<dlib::Component*> dlib::Component::allCreatedComponents; 
 
 /**
  * This constructor adds a pointer to the object owned by the children
@@ -8,5 +8,5 @@ std::vector<dlib::Component*> dlib::Component::AllCreatedComponents;
  */
 dlib::Component::Component()
 {
-    AllCreatedComponents.push_back(this);
+    allCreatedComponents.push_back(this);
 }   

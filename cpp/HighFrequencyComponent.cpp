@@ -1,6 +1,6 @@
 #include "../include/HighFrequencyComponent.h"
 
-std::vector<dlib::HighFrequencyComponent*> dlib::HighFrequencyComponent::AllCreatedHighFrequencyComponents; 
+std::vector<dlib::HighFrequencyComponent*> dlib::HighFrequencyComponent::allCreatedHighFrequencyComponents; 
 
 /**
  * This constructor adds a pointer to the object owned by the children
@@ -8,5 +8,5 @@ std::vector<dlib::HighFrequencyComponent*> dlib::HighFrequencyComponent::AllCrea
  */
 dlib::HighFrequencyComponent::HighFrequencyComponent()
 {
-    AllCreatedHighFrequencyComponents.push_back(this);
+    allCreatedHighFrequencyComponents.push_back(this);
 }

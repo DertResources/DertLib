@@ -14,13 +14,14 @@ namespace dlib {
     class HighFrequencyComponent : public dlib::Component
     {
     public:
+        /** A super constructor that holds together all child "Component Classes" */
         HighFrequencyComponent();
 
         /**
          * A vector of pointers to each component instansiated that is a child to
          * this class. This vector is itterated through in robot.h
          */
-        static std::vector<HighFrequencyComponent*> AllCreatedHighFrequencyComponents;
+        static std::vector<HighFrequencyComponent*> allCreatedHighFrequencyComponents;
 
         /**
          * Component specific callback that runs before the high frequency simulink
