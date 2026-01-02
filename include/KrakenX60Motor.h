@@ -21,7 +21,7 @@ namespace dlib {
     {
         // Motor Properties
         int canID = -1;
-        const char* canbusName = 'unfilled';
+        const char* canbusName = "unfilled";
         bool isReversed = false;
         double supplyCurrentLimit = 15;
         double openLoopRampPeriod = 0;
@@ -70,7 +70,7 @@ namespace dlib {
         }
 
         /** Modify Create Info @param __IN__openLoopRampPeriod New open loop ramp period value @return Modified copy of create info*/
-        KrakenX60MotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampPeriod)
+        KrakenX60MotorCreateInfo SetOpenLoopRampPeriod(double __IN__openLoopRampPeriod)
         {
             KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.openLoopRampPeriod = __IN__openLoopRampPeriod;
@@ -78,7 +78,7 @@ namespace dlib {
         }
 
         /** Modify Create Info @param __IN__enableFOC If true, field oriented control is enabled @return Modified copy of create info*/
-        KrakenX60MotorCreateInfo SetenableFOC(bool __IN__enableFOC)
+        KrakenX60MotorCreateInfo SetEnableFOC(bool __IN__enableFOC)
         {
             KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.enableFOC = __IN__enableFOC;
