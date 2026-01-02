@@ -1,12 +1,14 @@
 #pragma once
 
-//std
+// Std
 #include <algorithm>
 #include <vector>
 #include <functional>
-//local
+
+// Local
 #include "../include/KrakenX60Motor.h"
-//stre
+
+// Ctre
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
 

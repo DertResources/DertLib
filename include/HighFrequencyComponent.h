@@ -1,10 +1,11 @@
 #pragma once
 
-//Local
+// Std
+#include <vector>
+
+// Local
 #include "../include/Component.h"
 
-//Std
-#include <vector>
 namespace dlib {
 
     /**

@@ -1,12 +1,15 @@
 #pragma once
-//std
+
+// Std
 #include <optional>
 #include <cstdint>
 #include <string>
-//units
+
+// Units
 #include <units/time.h>
 #include <units/current.h>
-//ctre
+
+// Ctre
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
 #include <ctre/phoenix6/configs/Configs.hpp>

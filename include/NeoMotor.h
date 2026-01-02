@@ -1,8 +1,10 @@
 #pragma once
-//std
+
+// Std
 #include <optional>
 #include <cstdint>
-//rev
+
+// Rev
 #include <rev/SparkMax.h>
 #include <rev/config/SparkMaxConfig.h>
 #include <rev/SparkRelativeEncoder.h>

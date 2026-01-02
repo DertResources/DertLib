@@ -1,13 +1,15 @@
 #pragma once
 
-//std
+// Std
 #include <algorithm>
 #include <vector>
 #include <functional>
 #include <memory>
-//local
+
+// Local
 #include "../include/NeoMotor.h"
-//rev
+
+// Rev
 #include <rev/SparkMax.h>
 #include <rev/config/SparkMaxConfig.h>
 #include <rev/SparkRelativeEncoder.h>
