@@ -14,7 +14,7 @@ namespace dlib {
     struct NeoMotorCreateInfo
     {
         // Motor Properties
-        int canID;
+        int canID = -1;
         bool isReversed = false;
         uint8_t smartCurrentLimit = 15;
         double secondaryCurrentLimit = 15;
@@ -25,34 +25,76 @@ namespace dlib {
         double* positionCallback = nullptr;
         rev::spark::SparkMax::MotorType motorType = rev::spark::SparkMax::MotorType::kBrushless;
 
-        /** Modifies info in the create info, mainly used for create infos
-         * that are similar and share values
-         * @param oldCreateInfo Old create info
-         * @param canID Can ID
-         * @param dutyCycleCallback Pointer to simulink duty cycle value,
-         * the variable should follow this pattern &[MODELNAME]_Y.[VARIABLE_NAME]
-         * (set to nullptr if not used)
-         * @param velocityCallback Pointer to simulink velocity value - 
-         * the variable should follow this pattern &[MODELNAME]_U.[VARIABLE_NAME]
-         * (set to nullptr if not used)
-         * @param positionCallback Pointer to simulink position value -
-         * the variable should follow this pattern &[MODELNAME]_U.[VARIABLE_NAME] 
-         * (set to nullptr if not used)
-         * @return Modified return create info
-         */
-        static constexpr NeoMotorCreateInfo modifyInfo(
-            NeoMotorCreateInfo oldCreateInfo,
-            int canID,
-            double* dutyCycleCallback = nullptr,
-            double* velocityCallback = nullptr,
-            double* positionCallback = nullptr)
+        /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
+        NeoMotorCreateInfo SetCanID(int __IN__canID)
         {
-            auto newCreateInfo = oldCreateInfo;
-            newCreateInfo.canID = canID;
-            newCreateInfo.dutyCycleCallback = dutyCycleCallback;
-            newCreateInfo.velocityCallback = velocityCallback;
-            newCreateInfo.positionCallback = positionCallback;
-            return newCreateInfo;
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.canID = __IN__canID;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__isReversed New motor reversal value @return Modified copy of create info*/
+        NeoMotorCreateInfo SetIsReversed(bool __IN__isReversed)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.isReversed = __IN__isReversed;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__smartCurrentLimit New smart current limit value @return Modified copy of create info*/
+        NeoMotorCreateInfo SetSmartCurrentLimit(uint8_t __IN__smartCurrentLimit)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.smartCurrentLimit = __IN__smartCurrentLimit;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__secondaryCurrentLimit New secondary current limit value @return Modified copy of create info*/
+        NeoMotorCreateInfo SetSecondaryCurrentLimit(double __IN__secondaryCurrentLimit)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.secondaryCurrentLimit = __IN__secondaryCurrentLimit;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__openLoopRampRate New open loop ramp rate value @return Modified copy of create info*/
+        NeoMotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.openLoopRampRate = __IN__openLoopRampRate;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__dutyCycleCallback New dutycycle callback pointer @return Modified copy of create info*/
+        NeoMotorCreateInfo SetDutyCycleCallback(double* __IN__dutyCycleCallback)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.dutyCycleCallback = __IN__dutyCycleCallback;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__velocityCallback New angular velocity callback pointer @return Modified copy of create info*/
+        NeoMotorCreateInfo SetVelocityCallback(double* __IN__velocityCallback)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.velocityCallback = __IN__velocityCallback;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__positionCallback New angular position callback pointer @return Modified copy of create info*/
+        NeoMotorCreateInfo SetPositionCallback(double* __IN__positionCallback)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.positionCallback = __IN__positionCallback;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__motorType New motor type value @return Modified copy of create info*/
+        NeoMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType)
+        {
+            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.motorType = __IN__motorType;
+            return modifiedCreateInfo;
         }
     };
 

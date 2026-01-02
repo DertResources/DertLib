@@ -31,34 +31,76 @@ namespace dlib {
         double* velocityCallback = nullptr;
         double* positionCallback = nullptr;
 
-        /** Modifies info in the create info, mainly used for create infos
-         * that are similar and share values
-         * @param oldCreateInfo Old create info
-         * @param canID Can ID
-         * @param dutyCycleCallback Pointer to simulink duty cycle value,
-         * the variable should follow this pattern &[MODELNAME]_Y.[VARIABLE_NAME]
-         * (set to nullptr if not used)
-         * @param velocityCallback Pointer to simulink velocity value - 
-         * the variable should follow this pattern &[MODELNAME]_U.[VARIABLE_NAME]
-         * (set to nullptr if not used)
-         * @param positionCallback Pointer to simulink position value -
-         * the variable should follow this pattern &[MODELNAME]_U.[VARIABLE_NAME] 
-         * (set to nullptr if not used)
-         * @return Modified return create info
-         */
-        static constexpr KrakenX60MotorCreateInfo modifyInfo(
-            KrakenX60MotorCreateInfo oldCreateInfo,
-            int canID,
-            double* dutyCycleCallback = nullptr,
-            double* velocityCallback = nullptr,
-            double* positionCallback = nullptr)
+        /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetCanID(int __IN__canID)
         {
-            auto newCreateInfo = oldCreateInfo;
-            newCreateInfo.canID = canID;
-            newCreateInfo.dutyCycleCallback = dutyCycleCallback;
-            newCreateInfo.velocityCallback = velocityCallback;
-            newCreateInfo.positionCallback = positionCallback;
-            return newCreateInfo;
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.canID = __IN__canID;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__canbusName New smart current limit value @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetCanbusName(const char* __IN__canbusName)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.canbusName = __IN__canbusName;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__isReversed New motor reversal value @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetIsReversed(bool __IN__isReversed)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.isReversed = __IN__isReversed;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__supplyCurrentLimit New supply current limit value @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetSupplyCurrentLimit(double __IN__supplyCurrentLimit)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.supplyCurrentLimit = __IN__supplyCurrentLimit;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__openLoopRampRate New open loop ramp rate value @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.openLoopRampRate = __IN__openLoopRampRate;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__enableFOC If true, field oriented control is enabled @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetenableFOC(bool __IN__enableFOC)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.enableFOC = __IN__enableFOC;
+            return modifiedCreateInfo;
+        }
+
+        /** Modify Create Info @param __IN__dutyCycleCallback New dutycycle callback pointer @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetDutyCycleCallback(double* __IN__dutyCycleCallback)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.dutyCycleCallback = __IN__dutyCycleCallback;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__velocityCallback New angular velocity callback pointer @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetVelocityCallback(double* __IN__velocityCallback)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.velocityCallback = __IN__velocityCallback;
+            return modifiedCreateInfo;
+        }
+        
+        /** Modify Create Info @param __IN__positionCallback New angular position callback pointer @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetPositionCallback(double* __IN__positionCallback)
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
+            modifiedCreateInfo.positionCallback = __IN__positionCallback;
+            return modifiedCreateInfo;
         }
     }; 
 
