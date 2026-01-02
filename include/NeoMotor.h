@@ -25,6 +25,12 @@ namespace dlib {
         double* positionCallback = nullptr;
         rev::spark::SparkMax::MotorType motorType = rev::spark::SparkMax::MotorType::kBrushless;
 
+        static NeoMotorCreateInfo getDefaultCreateInfo()
+        {
+            NeoMotorCreateInfo modifiedCreateInfo;
+            return modifiedCreateInfo;
+        }
+
         /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
         NeoMotorCreateInfo SetCanID(int __IN__canID)
         {

@@ -20,8 +20,8 @@ namespace dlib {
     struct KrakenX60MotorCreateInfo
     {
         // Motor Properties
-        int canID;
-        const char* canbusName;
+        int canID = -1;
+        const char* canbusName = 'unfilled';
         bool isReversed = false;
         double supplyCurrentLimit = 15;
         double openLoopRampPeriod = 0;
@@ -30,6 +30,12 @@ namespace dlib {
         double* dutyCycleCallback = nullptr;
         double* velocityCallback = nullptr;
         double* positionCallback = nullptr;
+
+        static KrakenX60MotorCreateInfo getDefaultCreateInfo()
+        {
+            KrakenX60MotorCreateInfo modifiedCreateInfo;
+            return modifiedCreateInfo;
+        }
 
         /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
         KrakenX60MotorCreateInfo SetCanID(int __IN__canID)
@@ -103,6 +109,8 @@ namespace dlib {
             return modifiedCreateInfo;
         }
     }; 
+
+
 
     /** A single KrakenX60 */
     class KrakenX60Motor
