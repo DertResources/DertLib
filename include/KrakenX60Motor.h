@@ -63,11 +63,11 @@ namespace dlib {
             return modifiedCreateInfo;
         }
 
-        /** Modify Create Info @param __IN__openLoopRampRate New open loop ramp rate value @return Modified copy of create info*/
-        KrakenX60MotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate)
+        /** Modify Create Info @param __IN__openLoopRampPeriod New open loop ramp period value @return Modified copy of create info*/
+        KrakenX60MotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampPeriod)
         {
             KrakenX60MotorCreateInfo modifiedCreateInfo = *this;
-            modifiedCreateInfo.openLoopRampRate = __IN__openLoopRampRate;
+            modifiedCreateInfo.openLoopRampPeriod = __IN__openLoopRampPeriod;
             return modifiedCreateInfo;
         }
 
