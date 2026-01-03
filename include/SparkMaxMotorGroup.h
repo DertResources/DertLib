@@ -7,7 +7,7 @@
 #include <memory>
 
 // Local
-#include "../include/NeoMotor.h"
+#include "../include/SparkMaxMotor.h"
 
 // Rev
 #include <rev/SparkMax.h>
@@ -20,7 +20,7 @@ namespace dlib {
     public:
         /** Constructor for the Neo set 
          *  @param createInfos Array of Neo create infos
-        */
+         */
         SparkMaxMotorGroup(std::initializer_list<SparkMaxMotorCreateInfo> createInfos);
         
         // // // // // // // // // // // // // //
