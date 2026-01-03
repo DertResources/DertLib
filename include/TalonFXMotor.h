@@ -22,7 +22,7 @@ namespace dlib {
         KrakenX60,
         KrakenX44,
         Falcon500
-    }
+    };
 
     /** Create info for a TalonFX motor */
     struct TalonFXMotorCreateInfo
