@@ -1,19 +1,19 @@
-#include "../include/KrakenX60Group.h"
+#include "../include/TalonFXMotorGroup.h"
 
-/** Constructor for the kraken Set 
- * @param createInfos Array of kraken create infos
+/** Constructor for the TalonFX motor group 
+ * @param createInfos Array of TalonFX motor create infos
  */
-dlib::KrakenX60Group::KrakenX60Group(std::initializer_list<KrakenX60MotorCreateInfo> createInfos)
+dlib::TalonFXMotorGroup::TalonFXMotorGroup(std::initializer_list<TalonFXMotorCreateInfo> createInfos)
 {
     for(auto createInfo : createInfos)
     {
-        motorSet.push_back(std::make_unique<KrakenX60Motor>(createInfo));
+        motorSet.push_back(std::make_unique<TalonFXMotor>(createInfo));
         AddCallbacks(*motorSet.back());
     }
 }
 
 /** Stop all motors */
-void dlib::KrakenX60Group::Stop()
+void dlib::TalonFXMotorGroup::Stop()
 {
     for(auto& motor : motorSet)
     {
@@ -24,7 +24,7 @@ void dlib::KrakenX60Group::Stop()
 /** Set the duty cycle of all motors
  * @param dutyCycle Duty cycle for all motors
  */
-void dlib::KrakenX60Group::Set(double dutyCycle)
+void dlib::TalonFXMotorGroup::Set(double dutyCycle)
 {
     for(auto& motor : motorSet)
     {
@@ -36,7 +36,7 @@ void dlib::KrakenX60Group::Set(double dutyCycle)
  * @param isBrakeMode The mode the motors will be in when command is zero.
  * true for break, false for coast
  */
-void dlib::KrakenX60Group::SetBrakeModeWhenIdle(bool isBrakeMode)
+void dlib::TalonFXMotorGroup::SetBrakeModeWhenIdle(bool isBrakeMode)
 {
     for(auto& motor : motorSet)
     {
@@ -47,39 +47,39 @@ void dlib::KrakenX60Group::SetBrakeModeWhenIdle(bool isBrakeMode)
 /** Add all callbacks to the callback vectors
  * @param motor Reference to KrackenTalon object
  */
-void dlib::KrakenX60Group::AddCallbacks(KrakenX60Motor& motor)
+void dlib::TalonFXMotorGroup::AddCallbacks(TalonFXMotor& motor)
 {
     if(motor.finalCreateInfo.dutyCycleCallback != nullptr)
-        dutyCycleCallbacks.push_back(std::bind(&KrakenX60Motor::FetchDutyCycleFromSLCallback, &motor));
+        dutyCycleCallbacks.push_back(std::bind(&TalonFXMotor::FetchDutyCycleFromSLCallback, &motor));
     if(motor.finalCreateInfo.positionCallback != nullptr)
-        positionCallbacks.push_back(std::bind(&KrakenX60Motor::SendPositionToSLCallback, &motor));
+        positionCallbacks.push_back(std::bind(&TalonFXMotor::SendPositionToSLCallback, &motor));
     if(motor.finalCreateInfo.velocityCallback != nullptr)
-        velocityCallbacks.push_back(std::bind(&KrakenX60Motor::SendVelocityToSLCallback, &motor));
+        velocityCallbacks.push_back(std::bind(&TalonFXMotor::SendVelocityToSLCallback, &motor));
 }
 
 /** Pull positions and velocities from motor controllers and push them into simulink */
-void dlib::KrakenX60Group::SendSensorDataToSL()
+void dlib::TalonFXMotorGroup::SendSensorDataToSL()
 {
     SendVelocityValuesToSL();
     SendPositionValuesToSL();
 }
 
 /** Pull commanded duty cycles from simulink outputs and push them to motor controllers */
-void dlib::KrakenX60Group::FetchMotorCommandsFromSL()
+void dlib::TalonFXMotorGroup::FetchMotorCommandsFromSL()
 {
     for(auto func : dutyCycleCallbacks)
         func();
 }
 
 /** Pull motor angular velocities from motor controllers and push them into simulink */
-void dlib::KrakenX60Group::SendVelocityValuesToSL()
+void dlib::TalonFXMotorGroup::SendVelocityValuesToSL()
 {
     for(auto func : velocityCallbacks)
         func();
 }
 
 /** Pull motor angular positions from motor controllers and push them into simulink */
-void dlib::KrakenX60Group::SendPositionValuesToSL()
+void dlib::TalonFXMotorGroup::SendPositionValuesToSL()
 {
     for(auto func : positionCallbacks)
         func();

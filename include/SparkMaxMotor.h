@@ -10,8 +10,8 @@
 #include <rev/SparkRelativeEncoder.h>
 
 namespace dlib {
-    /** Create info for Neo Spark */
-    struct NeoMotorCreateInfo
+    /** Create info for SparkMax motor */
+    struct SparkMaxMotorCreateInfo
     {
         // Motor Properties
         int canID = -1;
@@ -25,94 +25,94 @@ namespace dlib {
         double* positionCallback = nullptr;
         rev::spark::SparkMax::MotorType motorType = rev::spark::SparkMax::MotorType::kBrushless;
 
-        static NeoMotorCreateInfo getDefaultCreateInfo()
+        static SparkMaxMotorCreateInfo getDefaultCreateInfo()
         {
-            NeoMotorCreateInfo modifiedCreateInfo;
+            SparkMaxMotorCreateInfo modifiedCreateInfo;
             return modifiedCreateInfo;
         }
 
         /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
-        NeoMotorCreateInfo SetCanID(int __IN__canID)
+        SparkMaxMotorCreateInfo SetCanID(int __IN__canID)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.canID = __IN__canID;
             return modifiedCreateInfo;
         }
         
         /** Modify Create Info @param __IN__isReversed New motor reversal value @return Modified copy of create info*/
-        NeoMotorCreateInfo SetIsReversed(bool __IN__isReversed)
+        SparkMaxMotorCreateInfo SetIsReversed(bool __IN__isReversed)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.isReversed = __IN__isReversed;
             return modifiedCreateInfo;
         }
 
         /** Modify Create Info @param __IN__smartCurrentLimit New smart current limit value @return Modified copy of create info*/
-        NeoMotorCreateInfo SetSmartCurrentLimit(uint8_t __IN__smartCurrentLimit)
+        SparkMaxMotorCreateInfo SetSmartCurrentLimit(uint8_t __IN__smartCurrentLimit)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.smartCurrentLimit = __IN__smartCurrentLimit;
             return modifiedCreateInfo;
         }
 
         /** Modify Create Info @param __IN__secondaryCurrentLimit New secondary current limit value @return Modified copy of create info*/
-        NeoMotorCreateInfo SetSecondaryCurrentLimit(double __IN__secondaryCurrentLimit)
+        SparkMaxMotorCreateInfo SetSecondaryCurrentLimit(double __IN__secondaryCurrentLimit)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.secondaryCurrentLimit = __IN__secondaryCurrentLimit;
             return modifiedCreateInfo;
         }
 
         /** Modify Create Info @param __IN__openLoopRampRate New open loop ramp rate value @return Modified copy of create info*/
-        NeoMotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate)
+        SparkMaxMotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.openLoopRampRate = __IN__openLoopRampRate;
             return modifiedCreateInfo;
         }
 
         /** Modify Create Info @param __IN__dutyCycleCallback New dutycycle callback pointer @return Modified copy of create info*/
-        NeoMotorCreateInfo SetDutyCycleCallback(double* __IN__dutyCycleCallback)
+        SparkMaxMotorCreateInfo SetDutyCycleCallback(double* __IN__dutyCycleCallback)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.dutyCycleCallback = __IN__dutyCycleCallback;
             return modifiedCreateInfo;
         }
         
         /** Modify Create Info @param __IN__velocityCallback New angular velocity callback pointer @return Modified copy of create info*/
-        NeoMotorCreateInfo SetVelocityCallback(double* __IN__velocityCallback)
+        SparkMaxMotorCreateInfo SetVelocityCallback(double* __IN__velocityCallback)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.velocityCallback = __IN__velocityCallback;
             return modifiedCreateInfo;
         }
         
         /** Modify Create Info @param __IN__positionCallback New angular position callback pointer @return Modified copy of create info*/
-        NeoMotorCreateInfo SetPositionCallback(double* __IN__positionCallback)
+        SparkMaxMotorCreateInfo SetPositionCallback(double* __IN__positionCallback)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.positionCallback = __IN__positionCallback;
             return modifiedCreateInfo;
         }
         
         /** Modify Create Info @param __IN__motorType New motor type value @return Modified copy of create info*/
-        NeoMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType)
+        SparkMaxMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType)
         {
-            NeoMotorCreateInfo modifiedCreateInfo = *this;
+            SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
             modifiedCreateInfo.motorType = __IN__motorType;
             return modifiedCreateInfo;
         }
     };
 
-    /** A single Neo 1.1 motor */
-    class NeoMotor
+    /** A single SparkMax motor */
+    class SparkMaxMotor
     {
     public:
-        /** Constructor for the Neo Motor */
-        NeoMotor(NeoMotorCreateInfo createInfo);
+        /** Constructor for the SparkMax motor */
+        SparkMaxMotor(SparkMaxMotorCreateInfo createInfo);
 
         /** Disable move constructor */
-        NeoMotor(NeoMotor&& other) noexcept;
+        SparkMaxMotor(SparkMaxMotor&& other) noexcept;
 
         // // // // // // // // // // // // // //
 
@@ -137,7 +137,7 @@ namespace dlib {
         void StopMotor();
 
         /** Create info for this motor */
-        NeoMotorCreateInfo finalCreateInfo{};
+        SparkMaxMotorCreateInfo finalCreateInfo{};
 
     private:
         /** Motor controller object

@@ -15,13 +15,13 @@
 #include <rev/SparkRelativeEncoder.h>
 
 namespace dlib {
-    class NeoGroup
+    class SparkMaxMotorGroup
     {
     public:
         /** Constructor for the Neo set 
          *  @param createInfos Array of Neo create infos
         */
-        NeoGroup(std::initializer_list<NeoMotorCreateInfo> createInfos);
+        SparkMaxMotorGroup(std::initializer_list<SparkMaxMotorCreateInfo> createInfos);
         
         // // // // // // // // // // // // // //
 
@@ -57,12 +57,12 @@ namespace dlib {
 
     private:
         /** Add all callbacks to the callback vectors
-         * @param motor reference to NeoMotor object
+         * @param motor reference to SparkMaxMotor object
          */
-        void AddCallbacks(NeoMotor& motor);
+        void AddCallbacks(SparkMaxMotor& motor);
 
         /** Vector of all motors in this set */
-        std::vector<std::unique_ptr<NeoMotor>> motorSet;
+        std::vector<std::unique_ptr<SparkMaxMotor>> motorSet;
 
         // // // // // // // // // // // // // //
         

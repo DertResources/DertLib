@@ -6,7 +6,7 @@
 #include <functional>
 
 // Local
-#include "../include/KrakenX60Motor.h"
+#include "../include/TalonFXMotor.h"
 
 // Ctre
 #include <ctre/phoenix6/TalonFX.hpp>
@@ -14,16 +14,16 @@
 
 namespace dlib {
     /**
-     * KrakenX60Group is a list of KrakenX60Motors
+     * TalonFXMotorGroup is a list of TalonFXMotors
      * this is a wrapper to automate a large amount of motor control
      */
-    class KrakenX60Group
+    class TalonFXMotorGroup
     {
     public:
-        /** Constructor for the kraken set 
-         * @param createInfos array of kraken create infos
+        /** Constructor for the TalonFX motor group 
+         * @param createInfos Array of TalonFX motor create infos
          */
-        KrakenX60Group(std::initializer_list<KrakenX60MotorCreateInfo> createInfos);
+        TalonFXMotorGroup(std::initializer_list<TalonFXMotorCreateInfo> createInfos);
         
         /** Stop all motors */
         void Stop();
@@ -57,14 +57,14 @@ namespace dlib {
 
     private:
         /** Add all callbacks to the callback vectors
-         * @param motor Reference to KrakenX60Motor object
+         * @param motor Reference to TalonFXMotor object
          */
-        void AddCallbacks(KrakenX60Motor& motor);
+        void AddCallbacks(TalonFXMotor& motor);
 
         // // // // // // // // // // // // // //
 
         /** Vector of all motors in this set */
-        std::vector<std::unique_ptr<KrakenX60Motor>> motorSet;
+        std::vector<std::unique_ptr<TalonFXMotor>> motorSet;
 
         /** Holds functions that update the angular position values for the motors */
         std::vector<std::function<void()>> velocityCallbacks;

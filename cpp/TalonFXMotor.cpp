@@ -1,7 +1,7 @@
-#include "../include/KrakenX60Motor.h"
+#include "../include/TalonFXMotor.h"
 
 /** constructor for the Kraken Talon */
-dlib::KrakenX60Motor::KrakenX60Motor(KrakenX60MotorCreateInfo createInfo)
+dlib::TalonFXMotor::TalonFXMotor(TalonFXMotorCreateInfo createInfo)
 : talonController{createInfo.canID, createInfo.canbusName},
 dutyCycleControl{0}
 {
@@ -36,37 +36,37 @@ dutyCycleControl{0}
 }
 
 /** Callback for getting position of motor */
-void dlib::KrakenX60Motor::SendPositionToSLCallback()
+void dlib::TalonFXMotor::SendPositionToSLCallback()
 {  
     *finalCreateInfo.positionCallback = talonController.GetPosition().GetValueAsDouble();
 }
 
 /** Callback for getting velocity of motor */
-void dlib::KrakenX60Motor::SendVelocityToSLCallback()
+void dlib::TalonFXMotor::SendVelocityToSLCallback()
 {  
     *finalCreateInfo.velocityCallback = talonController.GetVelocity().GetValueAsDouble()*60;  // Multiply by 60 for Rev/Sec to Rev/Min
 }
 
 /** Callback for setting duty cycle of motor */
-void dlib::KrakenX60Motor::FetchDutyCycleFromSLCallback()
+void dlib::TalonFXMotor::FetchDutyCycleFromSLCallback()
 {
     talonController.SetControl(dutyCycleControl.WithOutput(*finalCreateInfo.dutyCycleCallback));
 }
 
 /** Set duty cycle of motor */
-void dlib::KrakenX60Motor::SetDutyCycle(double DC)
+void dlib::TalonFXMotor::SetDutyCycle(double DC)
 {
     talonController.SetControl(dutyCycleControl.WithOutput(DC));
 }
 
 /** Set brake mode of motor */
-void dlib::KrakenX60Motor::SetBrakeMode(bool isBrakeMode)
+void dlib::TalonFXMotor::SetBrakeMode(bool isBrakeMode)
 {
     dutyCycleControl.WithOverrideBrakeDurNeutral(isBrakeMode);
 }
 
 /** Stop motor */
-void dlib::KrakenX60Motor::StopMotor()
+void dlib::TalonFXMotor::StopMotor()
 {
     talonController.StopMotor();
 }

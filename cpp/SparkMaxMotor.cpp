@@ -1,7 +1,7 @@
-#include "../include/NeoMotor.h"
+#include "../include/SparkMaxMotor.h"
 
 /** constructor for the Kraken Talon */
-dlib::NeoMotor::NeoMotor(NeoMotorCreateInfo createInfo)
+dlib::SparkMaxMotor::SparkMaxMotor(SparkMaxMotorCreateInfo createInfo)
 : sparkMax{createInfo.canID, createInfo.motorType}
 {
     rev::spark::SparkMaxConfig config{};
@@ -19,25 +19,25 @@ dlib::NeoMotor::NeoMotor(NeoMotorCreateInfo createInfo)
 }
 
 /** Callback for getting position of motor */
-void dlib::NeoMotor::SendPositionToSLCallback()
+void dlib::SparkMaxMotor::SendPositionToSLCallback()
 {
     *finalCreateInfo.positionCallback = sparkRelEncoder->GetPosition();
 }
 
 /** Callback for getting velocity of motor */
-void dlib::NeoMotor::SendVelocityToSLCallback()
+void dlib::SparkMaxMotor::SendVelocityToSLCallback()
 {
     *finalCreateInfo.velocityCallback = sparkRelEncoder->GetVelocity();
 }
 
 /** Callback for setting duty cycle of motor */
-void dlib::NeoMotor::FetchDutyCycleFromSLCallback()
+void dlib::SparkMaxMotor::FetchDutyCycleFromSLCallback()
 {
     sparkMax.Set(*finalCreateInfo.dutyCycleCallback);
 }
 
 /** Set brake mode of motor */
-void dlib::NeoMotor::SetBrakeMode(bool isBrakeMode)
+void dlib::SparkMaxMotor::SetBrakeMode(bool isBrakeMode)
 {
     rev::spark::SparkMaxConfig config{};
     config.SetIdleMode((isBrakeMode) ?  rev::spark::SparkBaseConfig::IdleMode::kBrake :  rev::spark::SparkBaseConfig::IdleMode::kCoast );
@@ -47,13 +47,13 @@ void dlib::NeoMotor::SetBrakeMode(bool isBrakeMode)
 }
 
 /** Set duty cycle of motor */
-void dlib::NeoMotor::SetDutyCycle(double DC)
+void dlib::SparkMaxMotor::SetDutyCycle(double DC)
 {
     sparkMax.Set(DC);
 }
 
 /** Stop motor */
-void dlib::NeoMotor::StopMotor()
+void dlib::SparkMaxMotor::StopMotor()
 {
     sparkMax.StopMotor();
 }
