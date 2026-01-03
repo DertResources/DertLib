@@ -94,11 +94,11 @@ namespace dlib {
             return modifiedCreateInfo;
         }
 
-        /** Modify Create Info @param __IN__TalonFXMotorType Type of motor this controller is plugged into @return Modified copy of create info*/
-        TalonFXMotorCreateInfo SetMotorType(TalonFXMotorType __IN__TalonFXMotorType)
+        /** Modify Create Info @param __IN__motorType Type of motor this controller is plugged into @return Modified copy of create info*/
+        TalonFXMotorCreateInfo SetMotorType(TalonFXMotorType __IN__motorType)
         {
             TalonFXMotorCreateInfo modifiedCreateInfo = *this;
-            modifiedCreateInfo.TalonFXMotorType = __IN__TalonFXMotorType;
+            modifiedCreateInfo.motorType = __IN__motorType;
             return modifiedCreateInfo;
         }
 
