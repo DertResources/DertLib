@@ -45,7 +45,7 @@ namespace dlib {
         double* positionCallback = nullptr;
 
         /** Get empty create info to modify */
-        static TalonFXMotorCreateInfo getDefaultCreateInfo()
+        static TalonFXMotorCreateInfo getDefaultCreateInfo();
 
         /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
         TalonFXMotorCreateInfo SetCanID(int __IN__canID);
@@ -133,6 +133,6 @@ namespace dlib {
         /** CAN connection warning */
         frc::Alert disconectedCANAlert;
 
-        static constexpr std::string_view alertGroupName;
+        static constexpr std::string_view alertGroupName = "CAN Connection Alerts";
     };
 };
