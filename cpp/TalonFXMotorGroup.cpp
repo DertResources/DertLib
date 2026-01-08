@@ -84,3 +84,12 @@ void dlib::TalonFXMotorGroup::SendPositionValuesToSL()
     for(auto func : positionCallbacks)
         func();
 }
+
+/** Update the warnings of CAN connections */
+void dlib::TalonFXMotorGroup::UpdateMotorCANConnectionAlerts()
+{
+    for(auto& motor : motorSet)
+    {
+        motor->UpdateCANConnectionAlert();
+    }
+}

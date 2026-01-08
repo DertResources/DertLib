@@ -55,6 +55,9 @@ namespace dlib {
         /** Pull motor angular positions from motor controllers and push them into simulink */
         void SendPositionValuesToSL();
 
+        /** Update the warnings of CAN connections */
+        void UpdateMotorCANConnectionAlerts();
+
     private:
         /** Add all callbacks to the callback vectors
          * @param motor Reference to TalonFXMotor object
