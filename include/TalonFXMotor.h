@@ -78,7 +78,7 @@ namespace dlib {
         TalonFXMotorCreateInfo SetPositionCallback(double* __IN__positionCallback);
 
         /** Modify Create Info @param __IN__displayName New display name for Alerts @return Modified copy of create info*/
-        TalonFXMotorCreateInfo SetDisplayName(double* __IN__displayName);
+        TalonFXMotorCreateInfo SetDisplayName(std::string __IN__displayName);
     }; 
 
 
