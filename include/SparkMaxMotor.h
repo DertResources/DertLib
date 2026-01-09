@@ -20,6 +20,7 @@ struct SparkMaxMotorCreateInfo
 {
     // Motor Properties
     int canID = -1;
+    std::string displayName;
     bool isReversed = false;
     uint8_t smartCurrentLimit = 15;
     double secondaryCurrentLimit = 15;
@@ -66,6 +67,12 @@ struct SparkMaxMotorCreateInfo
     
     /** Modify Create Info @param __IN__motorType New motor type value @return Modified copy of create info*/
     SparkMaxMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType);
+
+    /** Modify Create Info @param __IN__displayName New name of motor for alerts @return Modified copy of create info*/
+    SparkMaxMotorCreateInfo SetDisplayName(rev::spark::SparkMax::MotorType __IN__displayName);
+
+
+    
 };
 
 /** A single SparkMax motor */

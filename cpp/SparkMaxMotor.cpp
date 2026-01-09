@@ -2,7 +2,8 @@
 
 /** constructor for the Kraken Talon */
 dlib::SparkMaxMotor::SparkMaxMotor(SparkMaxMotorCreateInfo createInfo)
-: sparkMax{createInfo.canID, createInfo.motorType}
+: sparkMax{createInfo.canID, createInfo.motorType},
+  disconectedCANAlert{alertGroupName, createInfo.displayName, frc::Alert::AlertType::kWarning}
 {
     rev::spark::SparkMaxConfig config{};
     config
@@ -143,5 +144,13 @@ dlib::SparkMaxMotorCreateInfo dlib::SparkMaxMotorCreateInfo::SetMotorType(rev::s
 {
     SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
     modifiedCreateInfo.motorType = __IN__motorType;
+    return modifiedCreateInfo;
+}
+
+/** Modify Create Info @param __IN__displayName New name of motor for alerts @return Modified copy of create info*/
+dlib::SparkMaxMotorCreateInfo dlib::SparkMaxMotorCreateInfo::SetDisplayName(rev::spark::SparkMax::MotorType __IN__displayName)
+{
+    SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
+    modifiedCreateInfo.displayName = __IN__displayName;
     return modifiedCreateInfo;
 }
