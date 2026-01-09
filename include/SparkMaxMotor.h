@@ -26,83 +26,42 @@ struct SparkMaxMotorCreateInfo
     double* positionCallback = nullptr;
     rev::spark::SparkMax::MotorType motorType = rev::spark::SparkMax::MotorType::kBrushless;
 
-    static SparkMaxMotorCreateInfo getDefaultCreateInfo()
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo;
-        return modifiedCreateInfo;
-    }
+    static SparkMaxMotorCreateInfo getDefaultCreateInfo();
 
     /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetCanID(int __IN__canID)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.canID = __IN__canID;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetCanID(int __IN__canID);
+   
     
     /** Modify Create Info @param __IN__isReversed New motor reversal value @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetIsReversed(bool __IN__isReversed)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.isReversed = __IN__isReversed;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetIsReversed(bool __IN__isReversed);
+    
 
     /** Modify Create Info @param __IN__smartCurrentLimit New smart current limit value @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetSmartCurrentLimit(uint8_t __IN__smartCurrentLimit)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.smartCurrentLimit = __IN__smartCurrentLimit;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetSmartCurrentLimit(uint8_t __IN__smartCurrentLimit);
+
 
     /** Modify Create Info @param __IN__secondaryCurrentLimit New secondary current limit value @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetSecondaryCurrentLimit(double __IN__secondaryCurrentLimit)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.secondaryCurrentLimit = __IN__secondaryCurrentLimit;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetSecondaryCurrentLimit(double __IN__secondaryCurrentLimit);
+
 
     /** Modify Create Info @param __IN__openLoopRampRate New open loop ramp rate value @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.openLoopRampRate = __IN__openLoopRampRate;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetOpenLoopRampRate(double __IN__openLoopRampRate);
+  
 
     /** Modify Create Info @param __IN__dutyCycleCallback New dutycycle callback pointer @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetDutyCycleCallback(double* __IN__dutyCycleCallback)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.dutyCycleCallback = __IN__dutyCycleCallback;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetDutyCycleCallback(double* __IN__dutyCycleCallback);
+  
     
     /** Modify Create Info @param __IN__velocityCallback New angular velocity callback pointer @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetVelocityCallback(double* __IN__velocityCallback)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.velocityCallback = __IN__velocityCallback;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetVelocityCallback(double* __IN__velocityCallback);
+  
     
     /** Modify Create Info @param __IN__positionCallback New angular position callback pointer @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetPositionCallback(double* __IN__positionCallback)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.positionCallback = __IN__positionCallback;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetPositionCallback(double* __IN__positionCallback);
+   
     
     /** Modify Create Info @param __IN__motorType New motor type value @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType)
-    {
-        SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
-        modifiedCreateInfo.motorType = __IN__motorType;
-        return modifiedCreateInfo;
-    }
+    SparkMaxMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType);
 };
 
 /** A single SparkMax motor */
