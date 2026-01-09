@@ -63,8 +63,8 @@ void dlib::SparkMaxMotor::StopMotor()
 void dlib::SparkMaxMotor::UpdateCANConnectionAlert()
 {
     sparkMax.GetBusVoltage();
-    rev::REVLibError lastError = sparkMax.getLastError();
-    disconectedCANAlert.Set(lastError != rev::REVLibError::kOK);
+    rev::REVLibError lastError = sparkMax.GetLastError();
+    disconectedCANAlert.Set(lastError != rev::REVLibError::kOk);
 }
 
 // Create info functions
@@ -148,7 +148,7 @@ dlib::SparkMaxMotorCreateInfo dlib::SparkMaxMotorCreateInfo::SetMotorType(rev::s
 }
 
 /** Modify Create Info @param __IN__displayName New name of motor for alerts @return Modified copy of create info*/
-dlib::SparkMaxMotorCreateInfo dlib::SparkMaxMotorCreateInfo::SetDisplayName(rev::spark::SparkMax::MotorType __IN__displayName)
+dlib::SparkMaxMotorCreateInfo dlib::SparkMaxMotorCreateInfo::SetDisplayName(std::string __IN__displayName)
 {
     SparkMaxMotorCreateInfo modifiedCreateInfo = *this;
     modifiedCreateInfo.displayName = __IN__displayName;

@@ -69,7 +69,7 @@ struct SparkMaxMotorCreateInfo
     SparkMaxMotorCreateInfo SetMotorType(rev::spark::SparkMax::MotorType __IN__motorType);
 
     /** Modify Create Info @param __IN__displayName New name of motor for alerts @return Modified copy of create info*/
-    SparkMaxMotorCreateInfo SetDisplayName(rev::spark::SparkMax::MotorType __IN__displayName);
+    SparkMaxMotorCreateInfo SetDisplayName(std::string __IN__displayName);
 
 
     

@@ -57,7 +57,7 @@ public:
     void SendPositionValuesToSL();
 
     /** Update the warnings of CAN connections */
-    void dlib::SparkMaxMotorGroup::UpdateMotorCANConnectionAlerts()
+    void UpdateMotorCANConnectionAlerts();
 
     /** List of all instaniated motor groups */
     static std::vector<SparkMaxMotorGroup*> allSparkMaxMotorGroups;
