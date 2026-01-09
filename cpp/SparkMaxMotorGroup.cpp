@@ -1,9 +1,14 @@
 #include "../include/SparkMaxMotorGroup.h"
+
+std::vector<*SparkMaxMotorGroup> dlib::SparkMaxMotorGroup::allSparkMaxMotorGroups;
+
 /** Constructor for the SparkMax motor Set 
  *  @param createInfos array of SparkMax motor create infos
  */
 dlib::SparkMaxMotorGroup::SparkMaxMotorGroup(std::initializer_list<SparkMaxMotorCreateInfo> createInfos)
 {
+    allSparkMaxMotorGroups.push_back(this);
+
     for(auto createInfo : createInfos)
     {
         motorSet.push_back(std::make_unique<SparkMaxMotor>(createInfo));
@@ -78,4 +83,13 @@ void dlib::SparkMaxMotorGroup::SendPositionValuesToSL()
 {
     for(auto func : positionCallbacks)
         func();
+}
+
+/** Update the warnings of CAN connections */
+void dlib::SparkMaxMotorGroup::UpdateMotorCANConnectionAlerts()
+{
+    for(auto& motor : motorSet)
+    {
+        motor->UpdateCANConnectionAlert();
+    }
 }

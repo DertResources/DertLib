@@ -57,3 +57,11 @@ void dlib::SparkMaxMotor::StopMotor()
 {
     sparkMax.StopMotor();
 }
+
+/** Infers if the motor is connected based on errors */
+void dlib::SparkMaxMotor::UpdateCANConnectionAlert()
+{
+    sparkMax.GetBusVoltage();
+    rev::REVLibError lastError = sparkMax.getLastError();
+    disconectedCANAlert.Set(lastError != rev::REVLibError::kOK);
+}

@@ -1,10 +1,14 @@
 #include "../include/TalonFXMotorGroup.h"
 
+std::vector<*TalonFXMotorGroup> dlib::TalonFXMotorGroup::allTalonFXMotorGroups;
+
 /** Constructor for the TalonFX motor group 
  * @param createInfos Array of TalonFX motor create infos
  */
 dlib::TalonFXMotorGroup::TalonFXMotorGroup(std::initializer_list<TalonFXMotorCreateInfo> createInfos)
 {
+    allTalonFXMotorGroups.push_back(this);
+    
     for(auto createInfo : createInfos)
     {
         motorSet.push_back(std::make_unique<TalonFXMotor>(createInfo));
