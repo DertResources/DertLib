@@ -60,7 +60,7 @@ public:
     void UpdateMotorCANConnectionAlerts();
 
     /** List of all instaniated motor groups */
-    static std::vector<*TalonFXMotorGroup> allTalonFXMotorGroups; 
+    static std::vector<TalonFXMotorGroup*> allTalonFXMotorGroups; 
 private:
     /** Add all callbacks to the callback vectors
      * @param motor Reference to TalonFXMotor object

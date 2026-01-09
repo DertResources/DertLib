@@ -1,6 +1,6 @@
 #include "../include/SparkMaxMotorGroup.h"
 
-std::vector<*SparkMaxMotorGroup> dlib::SparkMaxMotorGroup::allSparkMaxMotorGroups;
+std::vector<SparkMaxMotorGroup*> dlib::SparkMaxMotorGroup::allSparkMaxMotorGroups;
 
 /** Constructor for the SparkMax motor Set 
  *  @param createInfos array of SparkMax motor create infos

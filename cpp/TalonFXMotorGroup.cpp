@@ -1,6 +1,6 @@
 #include "../include/TalonFXMotorGroup.h"
 
-std::vector<*TalonFXMotorGroup> dlib::TalonFXMotorGroup::allTalonFXMotorGroups;
+std::vector<TalonFXMotorGroup*> dlib::TalonFXMotorGroup::allTalonFXMotorGroups;
 
 /** Constructor for the TalonFX motor group 
  * @param createInfos Array of TalonFX motor create infos

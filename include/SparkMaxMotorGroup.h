@@ -60,7 +60,7 @@ public:
     void dlib::SparkMaxMotorGroup::UpdateMotorCANConnectionAlerts()
 
     /** List of all instaniated motor groups */
-    static std::vector<*SparkMaxMotorGroup> allSparkMaxMotorGroups;
+    static std::vector<SparkMaxMotorGroup*> allSparkMaxMotorGroups;
     
 private:
     /** Add all callbacks to the callback vectors

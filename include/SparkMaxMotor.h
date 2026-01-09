@@ -4,10 +4,14 @@
 #include <optional>
 #include <cstdint>
 
+// Frc
+#include <frc/Alert.h>
+
 // Rev
 #include <rev/SparkMax.h>
 #include <rev/config/SparkMaxConfig.h>
 #include <rev/SparkRelativeEncoder.h>
+#include <rev/SparkBase.h>
 
 namespace dlib {
     
