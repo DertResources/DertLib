@@ -2,7 +2,7 @@
 
 /** constructor for the Kraken Talon */
 dlib::TalonFXMotor::TalonFXMotor(TalonFXMotorCreateInfo createInfo)
-: talonController{createInfo.canID, createInfo.canbusName},
+: talonController{createInfo.canID, createInfo.canbus},
   dutyCycleControl{0},
   disconectedCANAlert{alertGroupName, createInfo.displayName, frc::Alert::AlertType::kWarning}
 {
@@ -98,11 +98,11 @@ dlib::TalonFXMotorCreateInfo dlib::TalonFXMotorCreateInfo::SetCanID(int __IN__ca
     return modifiedCreateInfo;
 }
 
-/** Modify Create Info @param __IN__canbusName New smart current limit value @return Modified copy of create info*/
-dlib::TalonFXMotorCreateInfo dlib::TalonFXMotorCreateInfo::SetCanbusName(const char* __IN__canbusName)
+/** Modify Create Info @param __IN__canbus New canbus value @return Modified copy of create info*/
+TalonFXMotorCreateInfo SetCanbus(ctre::phoenix6::CANBus __IN__canbus);
 {
     TalonFXMotorCreateInfo modifiedCreateInfo = *this;
-    modifiedCreateInfo.canbusName = __IN__canbusName;
+    modifiedCreateInfo.canbus = __IN__canbus;
     return modifiedCreateInfo;
 }
 

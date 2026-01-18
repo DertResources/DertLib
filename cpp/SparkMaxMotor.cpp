@@ -12,8 +12,8 @@ dlib::SparkMaxMotor::SparkMaxMotor(SparkMaxMotorCreateInfo createInfo)
         .SecondaryCurrentLimit(createInfo.secondaryCurrentLimit)
         .OpenLoopRampRate(createInfo.openLoopRampRate);
     sparkMax.Configure(config,
-                       rev::spark::SparkBase::ResetMode::kResetSafeParameters,
-                       rev::spark::SparkBase::PersistMode::kNoPersistParameters);
+                       rev::ResetMode::kResetSafeParameters,
+                       rev::PersistMode::kNoPersistParameters);
     if(createInfo.velocityCallback != nullptr || createInfo.positionCallback != nullptr)
         sparkRelEncoder = sparkMax.GetEncoder();
     finalCreateInfo = createInfo;
@@ -43,8 +43,8 @@ void dlib::SparkMaxMotor::SetBrakeMode(bool isBrakeMode)
     rev::spark::SparkMaxConfig config{};
     config.SetIdleMode((isBrakeMode) ?  rev::spark::SparkBaseConfig::IdleMode::kBrake :  rev::spark::SparkBaseConfig::IdleMode::kCoast );
     sparkMax.Configure(config,
-                       rev::spark::SparkBase::ResetMode::kNoResetSafeParameters,
-                       rev::spark::SparkBase::PersistMode::kNoPersistParameters);
+                       rev::ResetMode::kNoResetSafeParameters,
+                       rev::PersistMode::kNoPersistParameters);
 }
 
 /** Set duty cycle of motor */

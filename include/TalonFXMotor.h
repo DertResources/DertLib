@@ -19,7 +19,7 @@
 #include <ctre/phoenix6/configs/MotorOutputConfigs.hpp>
 #include <ctre/phoenix6/configs/CurrentLimitsConfigs.hpp>
 #include <ctre/phoenix6/controls/DutyCycleOut.hpp>
-
+#include <ctre/phoenix6/CANBus.hpp>
 
 namespace dlib {
     
@@ -35,9 +35,9 @@ enum TalonFXMotorType
 struct TalonFXMotorCreateInfo
 {
     // Motor Properties
-    int canID = -1;
+    int canID;
+    ctre::phoenix6::CANBus canbus;
     std::string displayName = "untitled controller";
-    const char* canbusName = "unfilled";
     bool isReversed = false;
     double supplyCurrentLimit = 15;
     double openLoopRampPeriod = 0;
@@ -54,8 +54,8 @@ struct TalonFXMotorCreateInfo
     /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
     TalonFXMotorCreateInfo SetCanID(int __IN__canID);
 
-    /** Modify Create Info @param __IN__canbusName New smart current limit value @return Modified copy of create info*/
-    TalonFXMotorCreateInfo SetCanbusName(const char* __IN__canbusName);
+    /** Modify Create Info @param __IN__canbus New canbus value @return Modified copy of create info*/
+    TalonFXMotorCreateInfo SetCanbus(ctre::phoenix6::CANBus __IN__canbus);
 
     /** Modify Create Info @param __IN__isReversed New motor reversal value @return Modified copy of create info*/
     TalonFXMotorCreateInfo SetIsReversed(bool __IN__isReversed);
