@@ -99,7 +99,7 @@ dlib::TalonFXMotorCreateInfo dlib::TalonFXMotorCreateInfo::SetCanID(int __IN__ca
 }
 
 /** Modify Create Info @param __IN__canbus New canbus value @return Modified copy of create info*/
-TalonFXMotorCreateInfo SetCanbus(ctre::phoenix6::CANBus __IN__canbus)
+dlib::TalonFXMotorCreateInfo dlib::SetCanbus(ctre::phoenix6::CANBus __IN__canbus)
 {
     TalonFXMotorCreateInfo modifiedCreateInfo = *this;
     modifiedCreateInfo.canbus = __IN__canbus;
