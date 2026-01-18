@@ -15,8 +15,11 @@
 // Ctre
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
-#include <ctre/phoenix6/configs/Configs.hpp>
 #include <ctre/phoenix6/StatusSignal.hpp>
+#include <ctre/phoenix6/configs/MotorOutputConfigs.hpp>
+#include <ctre/phoenix6/configs/CurrentLimitsConfigs.hpp>
+#include <ctre/phoenix6/controls/DutyCycleOut.hpp>
+
 
 namespace dlib {
     
