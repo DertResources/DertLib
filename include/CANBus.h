@@ -1,6 +1,7 @@
 #pragma once
 // Std
 #include <string>
+#include <memory>
 
 // Ctre
 #include <ctre/phoenix6/CANBus.hpp>
@@ -18,7 +19,7 @@ public:
 
 private:
     std::string CANBusName;
-    ctre::phoenix6::CANBus CTRE_CanBus;
+    std::shared_ptr<ctre::phoenix6::CANBus> CTRE_CanBus;
 };
 
 };
