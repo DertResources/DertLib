@@ -13,11 +13,9 @@ class CANBus
 {
 public:
     CANBus(std::string _IN_CANBusName);
-    CANBus();
     CANBus(const CANBus &obj);
 
-    operator ctre::phoenix6::CANBus() const;
-    operator std::string() const;
+    operator ctre::phoenix6::CANBus&() const;
 
 private:
     std::string CANBusName;
