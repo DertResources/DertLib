@@ -10,7 +10,7 @@
     , CANBusName{obj.CANBusName}
     {}
 
-    dlib::CANBus::operator ctre::phoenix6::CANBus&() const;
+    dlib::CANBus::operator ctre::phoenix6::CANBus&() const
     {
         return *CTRE_CanBus;
     }
