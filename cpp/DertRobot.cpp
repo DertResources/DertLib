@@ -1,8 +1,7 @@
-#include "../include/DertRobot.h"
+#pragma once
+#include <tuple>
 template <typename... Components>
-dib::DertRobot<Components...>::DertRobot()
-: ComponentArray{Components{}...}
-{}
+dlib::DertRobot<Components...>::DertRobot() {}
 
 template <typename... Components>
 void dlib::DertRobot<Components...>::RobotInit()
@@ -59,12 +58,12 @@ template <typename... Components>
 void dlib::DertRobot<Components...>::RobotPeriodic() 
 {  
   HighFrequencyPreStep();
-  Odometry_step();      //Step the model
+  HighFrequencyStep();      //Step the model
   HighFrequencyPostStep();
 
-  Odometry_to_Robot_Control_Transfer();
+  High_Frequency_to_Low_Frequency_Transfer();
 
   PreStep();
-  Robot_Control_step(); //Step the model
+  Step(); //Step the model
   PostStep();
 }
