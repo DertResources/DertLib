@@ -1,10 +1,11 @@
 #include "../include/DertRobot.h"
-
-dib::DertRobot::DertRobot()
+template <typename... Components>
+dib::DertRobot<Components...>::DertRobot()
 : ComponentArray{Components{}...}
 {}
 
-void dlib::DertRobot::RobotInit()
+template <typename... Components>
+void dlib::DertRobot<Components...>::RobotInit()
 {   
     Robot_Control_U.GameState = -1;
 
@@ -39,14 +40,23 @@ void dlib::DertRobot::RobotInit()
   4_ms,
   0_ms);
 }
+template <typename... Components>
+void dlib::DertRobot<Components...>::DisabledInit()   {Robot_Control_U.GameState = 0;}
 
-void dlib::DertRobot::DisabledInit()   {Robot_Control_U.GameState = 0;}
-void dlib::DertRobot::AutonomousInit() {Robot_Control_U.GameState = 1;}
-void dlib::DertRobot::TeleopInit()     {Robot_Control_U.GameState = 2;}
-void dlib::DertRobot::TestInit()       {Robot_Control_U.GameState = 3;}
-void dlib::DertRobot::SimulationInit() {Robot_Control_U.GameState = 4;}
+template <typename... Components>
+void dlib::DertRobot<Components...>::AutonomousInit() {Robot_Control_U.GameState = 1;}
 
-void dlib::DertRobot::RobotPeriodic() 
+template <typename... Components>
+void dlib::DertRobot<Components...>::TeleopInit()     {Robot_Control_U.GameState = 2;}
+
+template <typename... Components>
+void dlib::DertRobot<Components...>::TestInit()       {Robot_Control_U.GameState = 3;}
+
+template <typename... Components>
+void dlib::DertRobot<Components...>::SimulationInit() {Robot_Control_U.GameState = 4;}
+
+template <typename... Components>
+void dlib::DertRobot<Components...>::RobotPeriodic() 
 {  
   HighFrequencyPreStep();
   Odometry_step();      //Step the model
