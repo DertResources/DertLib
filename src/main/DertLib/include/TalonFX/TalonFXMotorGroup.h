@@ -4,15 +4,16 @@
 #include <algorithm>
 #include <vector>
 #include <functional>
+#include <variant>
 
 // Local
-#include "../include/TalonFXMotor.h"
+#include "../../include/TalonFX/TalonFXMotor.h"
 
 // Ctre
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
 
-namespace dlib {
+namespace dlib::TalonFX {
 
 /**
  * TalonFXMotorGroup is a list of TalonFXMotors
@@ -24,7 +25,7 @@ public:
     /** Constructor for the TalonFX motor group 
      * @param createInfos Array of TalonFX motor create infos
      */
-    TalonFXMotorGroup(std::initializer_list<TalonFXMotorCreateInfo> createInfos);
+    TalonFXMotorGroup(std::initializer_list<TalonFX::MotorCreateInfo> createInfos);
     
     /** Stop all motors */
     void Stop();
@@ -65,12 +66,17 @@ private:
     /** Add all callbacks to the callback vectors
      * @param motor Reference to TalonFXMotor object
      */
-    void AddCallbacks(TalonFXMotor& motor);
+    template <class T>
+    void AddCallbacks(TalonFXMotor<T>& motor);
 
     // // // // // // // // // // // // // //
 
     /** Vector of all motors in this set */
-    std::vector<std::unique_ptr<TalonFXMotor>> motorSet;
+    using MotorVarient = std::variant<TalonFXMotor<DutyCycleControl>,
+                                             TalonFXMotor<VelocityControl>,
+                                             TalonFXMotor<FollowerControl>>;
+
+    std::vector<std::unique_ptr<MotorVarient>> motorSet;
 
     /** Holds functions that update the angular position values for the motors */
     std::vector<std::function<void()>> velocityCallbacks;
@@ -79,7 +85,7 @@ private:
     std::vector<std::function<void()>> positionCallbacks;
     
     /** Holds functions to update the duty cycle of the motors */
-    std::vector<std::function<void()>> dutyCycleCallbacks;
+    std::vector<std::function<void()>> ControlCallbacks;
 };
 
 };
