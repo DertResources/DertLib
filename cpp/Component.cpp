@@ -9,4 +9,4 @@ std::vector<dlib::Component*> dlib::Component::allCreatedComponents;
 dlib::Component::Component()
 {
     allCreatedComponents.push_back(this);
-}   
+}

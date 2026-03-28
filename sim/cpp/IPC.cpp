@@ -3,7 +3,7 @@
 namespace dlibsim
 {
 ////////////////////////////
-// private
+//       private          //
 ////////////////////////////
 //read
 void IPC::ReadFailure()

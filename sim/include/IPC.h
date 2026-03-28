@@ -1,11 +1,12 @@
 #pragma once
-#include "../include/SerializeHelper.h"
 #include "DataEntry.h"
 #include "Device.h"
 #include <vector>
 #include <cstdint>
 #include <functional>
 #include <unordered_map>
+#include "../include/SerializeHelper.h"
+#include "../include/PortabilityHelper.h"
 
 namespace dlibsim
 {

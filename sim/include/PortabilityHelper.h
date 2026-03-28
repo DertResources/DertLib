@@ -5,7 +5,7 @@
 namespace dlib
 {
 
-void print_t(std::string message)
+inline void print_t(std::string message)
 {
     std::cout << message;
 }

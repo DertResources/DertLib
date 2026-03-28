@@ -7,8 +7,8 @@ DataEntry::DataEntry()
 : name{""}
 , sizeInBytes{0}
 , isSigned{true}
-, dataType{DataType::FLOAT}
 , direction{DataDirection::DESIREDSTATE}
+, dataType{DataType::FLOAT}
 , DataDescription{0}
 , byteOffset{0}
 {}
