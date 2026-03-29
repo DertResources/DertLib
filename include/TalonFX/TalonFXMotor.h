@@ -40,7 +40,7 @@ concept ValidControlType = requires(T t,
     talon.SetControl(t.GetControl(boolType));
     {t.SetBrakeMode(boolType)} ->std::same_as<void>;
     {t.DeviceControlConfigure(talonConfigurator)} ->std::same_as<void>;
-    requires std::derived_from<std::remove_cvref_t<decltype(t.ControlCreateInfo)>, BaseMotorCreateInfo>;
+    // requires std::derived_from<std::remove_cvref_t<decltype(t.ControlCreateInfo)>, BaseMotorCreateInfo>;
 };
 
 template <ValidControlType CTO>

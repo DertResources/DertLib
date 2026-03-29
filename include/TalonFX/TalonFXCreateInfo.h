@@ -26,6 +26,7 @@ enum MotorType
 };
 
 /** Create info for a TalonFX motor */
+template <class Derived>
 struct BaseMotorCreateInfo
 {
     // Motor Properties
@@ -43,48 +44,51 @@ struct BaseMotorCreateInfo
     double* positionCallback = nullptr;
 
     /** Modify Create Info @param __IN__canID New CAN ID value @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetCanID(const int& __IN__canID);
+    inline Derived& SetCanID(const int& __IN__canID) { this->canID = __IN__canID; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__canbus New canbus value @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetCanbus(const ctre::phoenix6::CANBus& __IN__canbus);
+    inline Derived& SetCanbus(const ctre::phoenix6::CANBus& __IN__canbus) { this->canbus = __IN__canbus; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__isReversed New motor reversal value @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetIsReversed(const bool& __IN__isReversed);
+    inline Derived& SetIsReversed(const bool& __IN__isReversed) { this->isReversed = __IN__isReversed; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__supplyCurrentLimit New supply current limit value @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetSupplyCurrentLimit(const double& __IN__supplyCurrentLimit);
+    inline Derived& SetSupplyCurrentLimit(const double& __IN__supplyCurrentLimit) { this->supplyCurrentLimit = __IN__supplyCurrentLimit; return static_cast<Derived&>(*this); }
+
 
     /** Modify Create Info @param __IN__openLoopRampPeriod New open loop ramp period value @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetOpenLoopRampPeriod(const double& __IN__openLoopRampPeriod);
+    inline Derived& SetOpenLoopRampPeriod(const double& __IN__openLoopRampPeriod) { this->openLoopRampPeriod = __IN__openLoopRampPeriod; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__enableFOC If true, field oriented control is enabled @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetEnableFOC(const bool& __IN__enableFOC);
+    inline Derived& SetEnableFOC(const bool& __IN__enableFOC) { this->enableFOC = __IN__enableFOC; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__motorType Type of motor this controller is plugged into @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetMotorType(const MotorType& __IN__motorType);
+    inline Derived& SetMotorType(const MotorType& __IN__motorType) { this->motorType = __IN__motorType; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__velocityCallback New angular velocity callback pointer @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetVelocityCallback( double*& __IN__velocityCallback);
+    inline Derived& SetVelocityCallback( double* __IN__velocityCallback) { this->velocityCallback = __IN__velocityCallback; return static_cast<Derived&>(*this); }
 
     /** Modify Create Info @param __IN__positionCallback New angular position callback pointer @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetPositionCallback( double*& __IN__positionCallback);
+    inline Derived& SetPositionCallback( double* __IN__positionCallback) { this->positionCallback = __IN__positionCallback; return static_cast<Derived&>(*this); }
+
 
     /** Modify Create Info @param __IN__displayName New display name for Alerts @return Modified copy of create info*/
-    inline BaseMotorCreateInfo& SetDisplayName(const std::string& __IN__displayName);
+    inline Derived& SetDisplayName(const std::string& __IN__displayName) { this->displayName = __IN__displayName; return static_cast<Derived&>(*this); }
 }; 
 
-struct DutyCycleCreateInfo : public BaseMotorCreateInfo
+struct DutyCycleCreateInfo : public BaseMotorCreateInfo<DutyCycleCreateInfo>
 {
     double* dutyCycleCallback = nullptr;
 
     /** Modify Create Info @param __IN__dutyCycleCallback New dutycycle callback pointer @return Modified copy of create info*/
-    DutyCycleCreateInfo& SetDutyCycleCallback(double*& __IN__dutyCycleCallback);
+    DutyCycleCreateInfo& SetDutyCycleCallback(double* __IN__dutyCycleCallback);
     
     inline DutyCycleCreateInfo Clone() {return *this;};
 
 };
 
-struct VelocityCreateInfo : public BaseMotorCreateInfo {
+struct VelocityCreateInfo : public BaseMotorCreateInfo<VelocityCreateInfo> {
+    double* targetVelocity = nullptr;
     double* P_Gain  = nullptr;
     double* I_Gain  = nullptr;
     double* D_Gain  = nullptr;
@@ -95,6 +99,7 @@ struct VelocityCreateInfo : public BaseMotorCreateInfo {
     int slot_PID = 0; //0-2
     bool updatePID = false;
     AngularAccel acceleration = AngularAccel(0);
+    inline VelocityCreateInfo& SetTargetVelocity(double* __IN__targetVelocity) {targetVelocity  = __IN__targetVelocity     ; return *this;}
     inline VelocityCreateInfo& SetPGain(double* __IN__P_Gain)             {P_Gain       = __IN__P_Gain                     ; return *this;}
     inline VelocityCreateInfo& SetIGain(double* __IN__I_Gain)             {I_Gain       = __IN__I_Gain                     ; return *this;}
     inline VelocityCreateInfo& SetDGain(double* __IN__D_Gain)             {D_Gain       = __IN__D_Gain                     ; return *this;}
@@ -109,7 +114,7 @@ struct VelocityCreateInfo : public BaseMotorCreateInfo {
     inline VelocityCreateInfo Clone() {return *this;};
 };
 
-struct FollowerCreateInfo : public BaseMotorCreateInfo {
+struct FollowerCreateInfo : public BaseMotorCreateInfo<FollowerCreateInfo> {
     int leaderID = 0;
     bool isStrict = true;
     Hz updateFrequency = Hz(20);

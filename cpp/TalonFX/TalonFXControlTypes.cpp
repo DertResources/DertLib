@@ -74,7 +74,7 @@ VelControlObj VelocityControl::GetControl(bool& selfDestruct)
     {
         ControlObj.WithFeedForward(*ControlCreateInfo.FF);    
     }
-    ControlObj.WithVelocity(AngularVel(*ControlCreateInfo.velocityCallback));
+    ControlObj.WithVelocity(AngularVel(*ControlCreateInfo.targetVelocity/60));
     return ControlObj;
 }
 
