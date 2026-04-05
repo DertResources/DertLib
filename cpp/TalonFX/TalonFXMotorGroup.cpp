@@ -1,4 +1,7 @@
 #include "../../include/TalonFX/TalonFXMotorGroup.h"
+#include "../../include/TalonFX/TalonFXPidHandler.h"
+#include <memory>
+#include <variant>
 
 namespace dlib::TalonFX
 {
@@ -8,39 +11,33 @@ std::vector<TalonFXMotorGroup*> TalonFXMotorGroup::allTalonFXMotorGroups;
 /** Constructor for the TalonFX motor group 
  * @param createInfos Array of TalonFX motor create infos
  */
-TalonFXMotorGroup::TalonFXMotorGroup(std::initializer_list<TalonFX::MotorCreateInfo> createInfos)
+TalonFXMotorGroup::TalonFXMotorGroup(std::initializer_list<std::variant<
+        MotorCreateInfo<DutyCycleCreateInfo>,
+        MotorCreateInfo<VelocityCreateInfo>,
+        MotorCreateInfo<FollowerCreateInfo>
+        >>
+         createInfos)
 {
     allTalonFXMotorGroups.push_back(this);
 
-
+    
+    
     for(auto createInfo : createInfos)
     {
-        std::visit(
-            [&](auto& info)
-            {
-                using T = std::decay_t<decltype(info)>;
+        InnerType inner = std::visit<InnerType>([](auto& info) {
+            return info.inner;
+        }, createInfo); 
 
-                if constexpr (std::is_same_v<T, DutyCycleCreateInfo>)
-                    motorSet.push_back(std::make_unique<MotorVarient>(
-                    std::in_place_type<TalonFXMotor<DutyCycleControl>>, createInfo));
-                else if constexpr (std::is_same_v<T, VelocityCreateInfo>)
-                    motorSet.push_back(std::make_unique<MotorVarient>(
-                    std::in_place_type<TalonFXMotor<VelocityControl>>, createInfo));
-                else
-                    motorSet.push_back(std::make_unique<MotorVarient>(
-                    std::in_place_type<TalonFXMotor<FollowerControl>>, createInfo));
-            }
-            ,createInfo 
-        );
+        std::visit([&](auto& info)
+        {
+            using T = std::decay_t<decltype(info)>;
+            using ControlType = typename ControlTypeFrom<T>::type;
+            motorSet.push_back(std::make_unique<TalonFXMotor>(
+                std::in_place_type<ControlType>, info));
 
-        std::visit(
-            overloads{
-                [&](TalonFXMotor<DutyCycleControl>& obj) {AddCallbacks<DutyCycleControl>(obj);},
-                [&](TalonFXMotor<VelocityControl>& obj)  {AddCallbacks<VelocityControl>(obj); },
-                [&](TalonFXMotor<FollowerControl>& obj)  {AddCallbacks<FollowerControl>(obj); }
-            }
-            , *motorSet.back()
-        );
+            AddCallbacks<ControlType>(std::get<ControlType>(*motorSet.back()));
+        },
+        inner);
     }
 }
 
@@ -48,16 +45,7 @@ TalonFXMotorGroup::TalonFXMotorGroup(std::initializer_list<TalonFX::MotorCreateI
 void TalonFXMotorGroup::Stop()
 {
     for(auto& motor : motorSet)
-    {
-        std::visit(
-            overloads{
-                [&](TalonFXMotor<DutyCycleControl>& obj){obj.StopMotor();},
-                [&](TalonFXMotor<VelocityControl>& obj) {obj.StopMotor();},
-                [&](TalonFXMotor<FollowerControl>& obj) {obj.StopMotor();}
-            },
-            *motor
-        );
-    }
+        std::visit([](auto& obj){obj.StopMotor();}, *motor );
 }
 
 /** Set the brake mode when idle (coast / break) for all motors 
@@ -67,29 +55,21 @@ void TalonFXMotorGroup::Stop()
 void TalonFXMotorGroup::SetBrakeModeWhenIdle(bool isBrakeMode)
 {
     for(auto& motor : motorSet)
-    {
-        std::visit(
-            overloads{
-                [&](TalonFXMotor<DutyCycleControl>& obj){obj.SetBrakeMode(isBrakeMode);},
-                [&](TalonFXMotor<VelocityControl>& obj){obj.SetBrakeMode(isBrakeMode);},
-                [&](TalonFXMotor<FollowerControl>& obj){obj.SetBrakeMode(isBrakeMode);}
-            },
-            *motor
-        );
-    }
+        std::visit([&](auto& obj){obj.SetBrakeMode(isBrakeMode);}, *motor );
 }
 
 /** Add all callbacks to the callback vectors
  * @param motor Reference to KrackenTalon object
  */
-template <class T>
-void TalonFXMotorGroup::AddCallbacks(TalonFX::TalonFXMotor<T>& motor)
+template <ControlTypeClass T>
+void TalonFXMotorGroup::AddCallbacks(T& motor)
 {
     if(motor.IsAngularPositionRequested())
-        positionCallbacks.push_back(std::bind(&TalonFXMotor<T>::SendPositionToSLCallback, &motor));
+        positionCallbacks.push_back(std::bind(&T::SendPositionToSLCallback, &motor));
     if(motor.IsAngularVelocityRequested())
-        velocityCallbacks.push_back(std::bind(&TalonFXMotor<T>::SendVelocityToSLCallback, &motor));
-    ControlCallbacks.push_back(std::bind(&TalonFXMotor<T>::ControlLoop, &motor));
+        velocityCallbacks.push_back(std::bind(&T::SendVelocityToSLCallback, &motor));
+    if(motor.HasControlLoop())
+        ControlCallbacks.push_back(std::bind(&T::ControlLoop, &motor));
 }
 
 /** Pull positions and velocities from motor controllers and push them into simulink */
@@ -124,16 +104,7 @@ void TalonFXMotorGroup::SendPositionValuesToSL()
 void TalonFXMotorGroup::UpdateMotorCANConnectionAlerts()
 {
     for(auto& motor : motorSet)
-    {
-        std::visit(
-            overloads{
-                [](TalonFXMotor<DutyCycleControl>& obj){obj.UpdateCANConnectionAlert();},
-                [](TalonFXMotor<VelocityControl>& obj){obj.UpdateCANConnectionAlert();},
-                [](TalonFXMotor<FollowerControl>& obj){obj.UpdateCANConnectionAlert();}
-            },
-            *motor
-        );
-    }
+        std::visit([](auto& obj){obj.UpdateCANConnectionAlert();}, *motor );
 }
 
 };

@@ -1,8 +1,5 @@
 #pragma once
 
-// Std
-#include <functional>
-
 // ctre
 #include <ctre/phoenix6/controls/DutyCycleOut.hpp>
 #include <ctre/phoenix6/controls/VelocityDutyCycle.hpp>
@@ -18,67 +15,48 @@
 
 // Local
 #include "../../include/TalonFX/TalonFXCreateInfo.h"
+#include "../../include/TalonFX/TalonFXMotor.h"
+#include "../../include/TalonFX/TalonFXPidHandler.h"
 
 // Unit Small
 using AngularAccel = units::angular_acceleration::turns_per_second_squared_t;
 using AngularVel = units::angular_velocity::turns_per_second_t;
 using Hz = units::frequency::Hz;
 
-// Control Obj Small
-using DCControlObj = ctre::phoenix6::controls::DutyCycleOut;
-using VelControlObj = ctre::phoenix6::controls::VelocityDutyCycle;
-using FollowControlObj = ctre::phoenix6::controls::StrictFollower;
-using Configurator = ctre::phoenix6::configs::TalonFXConfigurator;
-
 namespace dlib::TalonFX 
 {
 
 // // // // // // // // // // // // // // // // // // // // // //
-class DutyCycleControl
+class DutyCycleControl : public BaseTalonFXMotor<ctre::phoenix6::controls::DutyCycleOut, DutyCycleCreateInfo>
 {
 public:
-    DutyCycleControl(TalonFX::DutyCycleCreateInfo createInfo);
-    void DeviceControlConfigure(Configurator* talonConfigurator);
-    void SetBrakeMode(bool &isBrakeMode);
-    DCControlObj GetControl(bool& selfDestruct);
-    DutyCycleCreateInfo ControlCreateInfo;
-    using CreateInfoType = DutyCycleCreateInfo;
-
-private:
-    DCControlObj ControlObj;
+    DutyCycleControl(DutyCycleCreateInfo createInfo);
+    void UpdateControl() override;
 };
 // // // // // // // // // // // // // // // // // // // // // //
-class VelocityControl
+class VelocityControl : public BaseTalonFXMotor<ctre::phoenix6::controls::VelocityDutyCycle, VelocityCreateInfo>
+                      , public PidHandler      <ctre::phoenix6::controls::VelocityDutyCycle, VelocityCreateInfo>
 {
 public:
-    VelocityControl(TalonFX::VelocityCreateInfo createInfo);
-    void DeviceControlConfigure(Configurator* talonConfigurator);
-    void SetBrakeMode(bool &isBrakeMode);
-    VelControlObj GetControl(bool& selfDestruct);
-    VelocityCreateInfo ControlCreateInfo;
-    using CreateInfoType = VelocityCreateInfo;
+    VelocityControl(VelocityCreateInfo createInfo);
+    void UpdateControl() override;
 private:
-    VelControlObj ControlObj;
-    ctre::phoenix6::configs::Slot0Configs slot0;
-    Configurator* talonConfigurator;
     bool isFFEnabled = false;
-
 };
 // // // // // // // // // // // // // // // // // // // // // //
-class FollowerControl
+class FollowerControl : public BaseTalonFXMotor<ctre::phoenix6::controls::StrictFollower, FollowerCreateInfo>
 {
 public:
-    FollowerControl(TalonFX::FollowerCreateInfo createInfo);
-    void DeviceControlConfigure(Configurator* talonConfigurator);
-    void SetBrakeMode(bool &isBrakeMode);
-    FollowControlObj GetControl(bool& selfDestruct);
-    FollowerCreateInfo ControlCreateInfo;
-    using CreateInfoType = FollowerCreateInfo;
-private:
-    FollowControlObj ControlObj;
+    FollowerControl(FollowerCreateInfo createInfo);
+    void UpdateControl() override;
 };
 // // // // // // // // // // // // // // // // // // // // // //
 
-typedef std::variant<DutyCycleControl, VelocityControl, FollowerControl> ControlTypes;
+using TalonFXMotor = std::variant<DutyCycleControl, VelocityControl, FollowerControl> ;
+
+template<class T> struct ControlTypeFrom;
+template<> struct ControlTypeFrom<DutyCycleCreateInfo> { using type = DutyCycleControl; };
+template<> struct ControlTypeFrom<VelocityCreateInfo>  { using type = VelocityControl;  };
+template<> struct ControlTypeFrom<FollowerCreateInfo>  { using type = FollowerControl;  };
 
 }; //namespace dlib::TalonFX

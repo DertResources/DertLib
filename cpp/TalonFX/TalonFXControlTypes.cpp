@@ -1,101 +1,59 @@
-#include "../../include/TalonFX/TalonFXControlTypes.h"
+#include "../../include/TalonFX/TalonFXMotorGroup.h"
 
 namespace dlib::TalonFX 
 {
 
-// Duty Cycle Control
+// Duty Cycle Control // // // // // // // // // // // // // // // // // // //
 
 DutyCycleControl::DutyCycleControl(TalonFX::DutyCycleCreateInfo createInfo)
-: ControlCreateInfo{createInfo} 
-, ControlObj(0)
+: BaseTalonFXMotor(createInfo, 0)
 {
     ControlObj.WithEnableFOC(createInfo.enableFOC);
 }
 
-void DutyCycleControl::DeviceControlConfigure(Configurator* talonConfigurator) {}
-
-void DutyCycleControl::SetBrakeMode(bool &isBrakeMode) 
+void DutyCycleControl::UpdateControl()
 {
-    ControlObj.WithOverrideBrakeDurNeutral(isBrakeMode);
+    ControlObj.WithOutput(*savedCreateInfo.dutyCycleCallback);
 }
 
-DCControlObj DutyCycleControl::GetControl(bool& selfDestruct)
-{
-    selfDestruct = false;
-    ControlObj.WithOutput(*ControlCreateInfo.dutyCycleCallback);
-    return ControlObj;
-}
-
-// Velocity Control
+// Velocity Control // // // // // // // // // // // // // // // // // // //
 
 VelocityControl::VelocityControl(TalonFX::VelocityCreateInfo createInfo)
-: ControlCreateInfo{createInfo}
-, ControlObj(AngularVel(0))
-, isFFEnabled{ControlCreateInfo.FF != nullptr}
+: BaseTalonFXMotor(createInfo, AngularVel(0))
+, PidHandler(BaseTalonFXMotor::talonConfigurator,
+             savedCreateInfo.slotList,
+             savedCreateInfo.selectedSlot,
+             ControlObj)
 {
-    ControlObj.WithEnableFOC(ControlCreateInfo.enableFOC);
-    ControlObj.WithAcceleration(ControlCreateInfo.acceleration);
-    ControlObj.WithSlot(std::clamp(ControlCreateInfo.slot_PID,0,2));
-    ControlObj.WithUpdateFreqHz(std::clamp(ControlCreateInfo.updateFrequency,Hz(20),Hz(1000)));
-    ControlObj.WithUseTimesync(ControlCreateInfo.useTimeSync);
+    isFFEnabled = savedCreateInfo.FF != nullptr;
+    ControlObj.WithEnableFOC(savedCreateInfo.enableFOC);
+    ControlObj.WithAcceleration(savedCreateInfo.acceleration);
+    ControlObj.WithUpdateFreqHz(savedCreateInfo.updateFrequency);
+    ControlObj.WithUseTimesync(savedCreateInfo.useTimeSync);
+
 
     if(isFFEnabled)
-    {
-        ControlObj.WithFeedForward(*ControlCreateInfo.FF);    
-    }
-
+        ControlObj.WithFeedForward(*savedCreateInfo.FF);
 }
 
-void VelocityControl::DeviceControlConfigure(Configurator* talonConfigurator)
+void VelocityControl::UpdateControl()
 {
-    slot0.WithKP(*ControlCreateInfo.P_Gain);
-    slot0.WithKI(*ControlCreateInfo.I_Gain);
-    slot0.WithKD(*ControlCreateInfo.D_Gain);
-    talonConfigurator->Apply(slot0);
-    this->talonConfigurator = talonConfigurator;
+    PollPidUpdate();
+    
+    if(isFFEnabled) ControlObj.WithFeedForward(*savedCreateInfo.FF);   
+
+    ControlObj.WithVelocity(AngularVel(*savedCreateInfo.targetVelocity/60));
 }
 
-void VelocityControl::SetBrakeMode(bool &isBrakeMode)
-{
-    ControlObj.WithOverrideBrakeDurNeutral(isBrakeMode);
-}
-
-VelControlObj VelocityControl::GetControl(bool& selfDestruct)
-{
-    selfDestruct = false;
-    if(ControlCreateInfo.updatePID)
-    {
-        slot0.WithKP(*ControlCreateInfo.P_Gain);
-        slot0.WithKI(*ControlCreateInfo.I_Gain);
-        slot0.WithKD(*ControlCreateInfo.D_Gain);
-        this->talonConfigurator->Apply(slot0);    
-    }
-    if(isFFEnabled)
-    {
-        ControlObj.WithFeedForward(*ControlCreateInfo.FF);    
-    }
-    ControlObj.WithVelocity(AngularVel(*ControlCreateInfo.targetVelocity/60));
-    return ControlObj;
-}
-
-// Follower Control
+// Follower Control // // // // // // // // // // // // // // // // // // //
 
 FollowerControl::FollowerControl(TalonFX::FollowerCreateInfo createInfo)
-: ControlCreateInfo{createInfo}
-, ControlObj(ControlCreateInfo.leaderID)
+: BaseTalonFXMotor(createInfo, createInfo.leaderID)
 {
-    ControlObj.WithUpdateFreqHz(ControlCreateInfo.updateFrequency);
+    activeControlLoop = false;
+    ControlObj.WithUpdateFreqHz(savedCreateInfo.updateFrequency);
 }
-
-void FollowerControl::DeviceControlConfigure(Configurator* talonConfigurator) {}
-
-// No op, Follower follows break mode of leader
-void FollowerControl::SetBrakeMode(bool &isBrakeMode) {}
-
-FollowControlObj FollowerControl::GetControl(bool& selfDestruct)
-{
-    selfDestruct = true;
-    return ControlObj;
-}
+// no op
+void FollowerControl::UpdateControl() {}
 
 }; //namespace dlib::TalonFX

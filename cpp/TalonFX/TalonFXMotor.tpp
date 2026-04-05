@@ -1,83 +1,95 @@
 #pragma once
-// Just to intelisense sees the header file
-#if false
+// Just so intelisense can see the header and highlight correctly
 #include "../../include/TalonFX/TalonFXMotor.h"
-#endif
 
 namespace dlib::TalonFX
 {
 
 /** constructor for the Kraken Talon */
-template <ValidControlType CTO>
-TalonFXMotor<CTO>::TalonFXMotor(MotorCreateInfo createInfo)
-: CTO(std::get<typename CTO::CreateInfoType>(createInfo))
-, talonController{std::get<typename CTO::CreateInfoType>(createInfo).canID, std::get<typename CTO::CreateInfoType>(createInfo).canbus}
-, talonConfigurator{&talonController.GetConfigurator()}
-, disconnectedCANAlert{alertGroupName, CTO::ControlCreateInfo.displayName, frc::Alert::AlertType::kWarning}
+template <class ControlObjClass, class CreateInfoClass>
+template<typename... ObjArgs>
+BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::BaseTalonFXMotor(CreateInfoClass createInfo, ObjArgs&&... args)
+: savedCreateInfo{std::move(createInfo)}
+, ControlObj{std::forward<ObjArgs>(args)...}
+, talonController{savedCreateInfo.canID, savedCreateInfo.canbus}
+, talonConfigurator{talonController.GetConfigurator()}
+, disconnectedCANAlert{alertGroupName, savedCreateInfo.displayName, frc::Alert::AlertType::kWarning}
 {
-    
+    ctre::phoenix6::configs::TalonFXConfiguration CompleteConfig;
     // Initalize Connectivity Error to False
     disconnectedCANAlert.Set(false);
 
     // Set Direction
     ctre::phoenix6::configs::MotorOutputConfigs motorDirectionConfig;
-    motorDirectionConfig.Inverted = CTO::ControlCreateInfo.isReversed ? 
+    motorDirectionConfig.Inverted = savedCreateInfo.isReversed ? 
         ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive : 
         ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
-    talonConfigurator->Apply(motorDirectionConfig);
+    CompleteConfig.WithMotorOutput(motorDirectionConfig);
 
     // Set Open Loop Ramp Period
     ctre::phoenix6::configs::OpenLoopRampsConfigs rampPeriodConfig;
-    units::time::second_t openLoopRampPeriod_time {CTO::ControlCreateInfo.openLoopRampPeriod};
+    units::time::second_t openLoopRampPeriod_time {savedCreateInfo.openLoopRampPeriod};
     rampPeriodConfig.DutyCycleOpenLoopRampPeriod = openLoopRampPeriod_time;
-    talonConfigurator->Apply(rampPeriodConfig);
+    CompleteConfig.WithOpenLoopRamps(rampPeriodConfig);
 
     // Set Current Limiting Configuration
     ctre::phoenix6::configs::CurrentLimitsConfigs currentLimitsConfig;
-    units::current::ampere_t supplyCurrentLimit_amps {CTO::ControlCreateInfo.supplyCurrentLimit};
+    units::current::ampere_t supplyCurrentLimit_amps {savedCreateInfo.supplyCurrentLimit};
     currentLimitsConfig.SupplyCurrentLimit = supplyCurrentLimit_amps;
-    currentLimitsConfig.SupplyCurrentLimitEnable = true;
-    talonConfigurator->Apply(currentLimitsConfig);
-
-    CTO::DeviceControlConfigure(talonConfigurator);
-
-    // Store for later use
-    finalCreateInfo = createInfo;
+    currentLimitsConfig.SupplyCurrentLimitEnable = true; 
+    CompleteConfig.WithCurrentLimits(currentLimitsConfig);
+    
+    talonConfigurator.Apply(CompleteConfig);
 }
 
 /** Callback for getting position of motor */
-template <ValidControlType CTO>
-void TalonFXMotor<CTO>::SendPositionToSLCallback()
+template <class ControlObjClass, class CreateInfoClass>
+void BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::SendPositionToSLCallback()
 {  
-    *CTO::ControlCreateInfo.positionCallback = talonController.GetPosition().GetValueAsDouble();
+    if(!savedCreateInfo.positionCallback) return;
+    *savedCreateInfo.positionCallback = talonController.GetPosition().GetValueAsDouble();
 }
 
 /** Callback for getting velocity of motor */
-template <ValidControlType CTO>
-void TalonFXMotor<CTO>::SendVelocityToSLCallback()
+template <class ControlObjClass, class CreateInfoClass>
+void BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::SendVelocityToSLCallback()
 {  
-    *CTO::ControlCreateInfo.velocityCallback = talonController.GetVelocity().GetValueAsDouble()*60;  // Multiply by 60 for Rev/Sec to Rev/Min
+    if(!savedCreateInfo.velocityCallback) return;
+    *savedCreateInfo.velocityCallback = talonController.GetVelocity().GetValueAsDouble()*60;  // Multiply by 60 for Rev/Sec to Rev/Min
 }
 
-template <ValidControlType CTO>
-void TalonFXMotor<CTO>::ControlLoop()
+template <class ControlObjClass, class CreateInfoClass>
+void BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::ControlLoop()
 {
-    bool temp = false;
-    talonController.SetControl(CTO::GetControl(temp));
+    UpdateControl();
+    talonController.SetControl(ControlObj);
 }
 
 /** Stop motor */
-template <ValidControlType CTO>
-void TalonFXMotor<CTO>::StopMotor() { talonController.StopMotor(); }
+template <class ControlObjClass, class CreateInfoClass>
+void BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::StopMotor() { talonController.StopMotor(); }
 
 /** Is motor connected to CAN */
-template <ValidControlType CTO>
-void TalonFXMotor<CTO>::UpdateCANConnectionAlert() { disconnectedCANAlert.Set(!talonController.IsConnected()); }
+template <class ControlObjClass, class CreateInfoClass>
+void BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::UpdateCANConnectionAlert() { disconnectedCANAlert.Set(!talonController.IsConnected()); }
 
-template <ValidControlType CTO>
-bool TalonFXMotor<CTO>::IsAngularPositionRequested() { return CTO::ControlCreateInfo.positionCallback != nullptr; }
+template <class ControlObjClass, class CreateInfoClass>
+bool BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::IsAngularPositionRequested() { return savedCreateInfo.positionCallback != nullptr; }
 
-template <ValidControlType CTO>
-bool TalonFXMotor<CTO>::IsAngularVelocityRequested() { return CTO::ControlCreateInfo.velocityCallback != nullptr; }
+template <class ControlObjClass, class CreateInfoClass>
+bool BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::IsAngularVelocityRequested() { return savedCreateInfo.velocityCallback != nullptr; }
+
+template <class ControlObjClass, class CreateInfoClass>
+bool BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::HasControlLoop() {return activeControlLoop;}
+
+template <class ControlObjClass, class CreateInfoClass>
+void BaseTalonFXMotor<ControlObjClass, CreateInfoClass>::SetBrakeMode(bool isBrakeMode)
+{
+    if constexpr (requires { std::declval<ControlObjClass>().WithOverrideBrakeDurNeutral(isBrakeMode); })
+    {
+        ControlObj.WithOverrideBrakeDurNeutral(isBrakeMode);
+    }
+}
+
 
 }; // dlib::TalonFX

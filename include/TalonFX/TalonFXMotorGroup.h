@@ -2,18 +2,35 @@
 
 // Std
 #include <algorithm>
+#include <concepts>
 #include <vector>
 #include <functional>
 #include <variant>
-
+#include <concepts>
+#include <type_traits>
 // Local
-#include "../../include/TalonFX/TalonFXMotor.h"
+#include "../../include/TalonFX/TalonFXControlTypes.h"
 
 // Ctre
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
 
 namespace dlib::TalonFX {
+
+template <class T>
+concept ControlTypeClass = requires(T t, bool brakeMode)
+{
+    { t.UpdateCANConnectionAlert()  } -> std::same_as<void>;
+    { t.StopMotor()                 } -> std::same_as<void>;
+    { t.SetBrakeMode(brakeMode)     } -> std::same_as<void>;
+    { t.SendPositionToSLCallback()  } -> std::same_as<void>;
+    { t.SendVelocityToSLCallback()  } -> std::same_as<void>;
+    { t.HasControlLoop()            } -> std::same_as<bool>;
+    { t.IsAngularPositionRequested()} -> std::same_as<bool>;
+    { t.IsAngularVelocityRequested()} -> std::same_as<bool>;
+    { t.ControlLoop()               } -> std::same_as<void>;
+};
+
 
 /**
  * TalonFXMotorGroup is a list of TalonFXMotors
@@ -25,16 +42,16 @@ public:
     /** Constructor for the TalonFX motor group 
      * @param createInfos Array of TalonFX motor create infos
      */
-    TalonFXMotorGroup(std::initializer_list<TalonFX::MotorCreateInfo> createInfos);
+     
+    TalonFXMotorGroup(std::initializer_list<std::variant<
+        MotorCreateInfo<DutyCycleCreateInfo>,
+        MotorCreateInfo<VelocityCreateInfo>,
+        MotorCreateInfo<FollowerCreateInfo>
+        >> createInfos);
     
     /** Stop all motors */
     void Stop();
     
-    /** Set the duty cycle of all motors
-     * @param dutyCycle Duty cycle for all motors
-     */
-    void Set(double dutyCycle);
-
     /** Set the brake mode when idle (coast / break) for all motors 
      * @param isBrakeMode The mode the motors will be in when command is zero.
      * true for break, false for coast
@@ -60,23 +77,21 @@ public:
     /** Update the warnings of CAN connections */
     void UpdateMotorCANConnectionAlerts();
 
+    // TO BE FIXED LATER WITH ROBOT DECICE OVERHAUL, FINE RN AS ROBOT NEVER DESTRUCTS
     /** List of all instaniated motor groups */
     static std::vector<TalonFXMotorGroup*> allTalonFXMotorGroups; 
 private:
     /** Add all callbacks to the callback vectors
      * @param motor Reference to TalonFXMotor object
      */
-    template <class T>
-    void AddCallbacks(TalonFXMotor<T>& motor);
+    template <ControlTypeClass T>
+    void AddCallbacks(T& motor);
 
     // // // // // // // // // // // // // //
 
     /** Vector of all motors in this set */
-    using MotorVarient = std::variant<TalonFXMotor<DutyCycleControl>,
-                                             TalonFXMotor<VelocityControl>,
-                                             TalonFXMotor<FollowerControl>>;
 
-    std::vector<std::unique_ptr<MotorVarient>> motorSet;
+    std::vector<std::unique_ptr<TalonFXMotor>> motorSet;
 
     /** Holds functions that update the angular position values for the motors */
     std::vector<std::function<void()>> velocityCallbacks;

@@ -1,4 +1,5 @@
 #pragma once
+// Disables the header for reading in the tpp file
 #define TALON_FX_MOTOR_H
 
 // Std
@@ -21,38 +22,23 @@
 
 // Local
 #include "../../include/TalonFX/TalonFXCreateInfo.h"
-#include "../../include/TalonFX/TalonFXControlTypes.h"
 
 namespace dlib::TalonFX
 {
 
-template<class... Ts>
-struct overloads : Ts... { using Ts::operator()...; };
-
 /** A single TalonFX motor */
-
-template <class T>
-concept ValidControlType = requires(T t,
-                                    bool boolType,
-                                    ctre::phoenix6::hardware::TalonFX talon,
-                                    ctre::phoenix6::configs::TalonFXConfigurator* talonConfigurator)
-{
-    talon.SetControl(t.GetControl(boolType));
-    {t.SetBrakeMode(boolType)} ->std::same_as<void>;
-    {t.DeviceControlConfigure(talonConfigurator)} ->std::same_as<void>;
-    // requires std::derived_from<std::remove_cvref_t<decltype(t.ControlCreateInfo)>, BaseMotorCreateInfo>;
-};
-
-template <ValidControlType CTO>
-class TalonFXMotor : public CTO
+template <class ControlObjClass, class CreateInfoClass>
+class BaseTalonFXMotor
 {
 public:
     /** Constructor for the TalonFX motor */
-    TalonFXMotor(MotorCreateInfo createInfo);
+    template<typename... ObjArgs>
+    BaseTalonFXMotor(CreateInfoClass createInfo, ObjArgs&&... args);
     
-    /** Disable move constructor */
-    TalonFXMotor(TalonFXMotor&& other) = delete;
-
+    /** Disable copy & move constructors */
+    BaseTalonFXMotor(const BaseTalonFXMotor &obj) = delete;
+    BaseTalonFXMotor(BaseTalonFXMotor&& other) = delete;
+    virtual ~BaseTalonFXMotor() = default;
     /** Callback for getting position of motor */
     void SendPositionToSLCallback();
     
@@ -69,19 +55,27 @@ public:
 
     bool IsAngularPositionRequested();
     bool IsAngularVelocityRequested();
-    
-private:
-    MotorCreateInfo finalCreateInfo;
+    bool HasControlLoop();
 
+    void SetBrakeMode(bool isBrakeMode);
+    
+    virtual void UpdateControl() = 0;
+    
+
+protected:
+    CreateInfoClass savedCreateInfo;
+    ControlObjClass ControlObj;
+private:
     ctre::phoenix6::hardware::TalonFX talonController;
-    
-    ctre::phoenix6::configs::TalonFXConfigurator* talonConfigurator;
-    
-    /** CAN connection warning */
-    frc::Alert disconnectedCANAlert;
-    
-    /** Group name for all TalonFX CAN Alerts */
-    static constexpr std::string_view alertGroupName = "CAN Connection Alerts";
+protected:
+    ctre::phoenix6::configs::TalonFXConfigurator& talonConfigurator;
+    bool activeControlLoop = true;
+private:
+/** CAN connection warning */
+frc::Alert disconnectedCANAlert;
+
+/** Group name for all TalonFX CAN Alerts */
+static constexpr std::string_view alertGroupName = "CAN Connection Alerts";
 
 };
 
